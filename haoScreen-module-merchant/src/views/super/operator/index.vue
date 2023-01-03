@@ -303,7 +303,7 @@ export default {
       this.editUserForm = this.current
     },
     async _getOperatorRoles() {
-      await getOperatorRolesById(this.current.id).then(res => {
+      await getOperatorRolesById(this.current.operatorId).then(res => {
         if (res.code === 200) {
           this.roleData = res.data
         }
@@ -330,7 +330,7 @@ export default {
       })
     },
     _deleteUser() {
-      deleteOperator(this.current.id).then(res => {
+      deleteOperator(this.current.operatorId).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.deleteSuccess'))
           this._getOperators()
@@ -340,7 +340,7 @@ export default {
       })
     },
     _changeUserStatus() {
-      updateOperator(this.current.id, this.current.useStatus).then(res => {
+      updateOperator(this.current.operatorId, this.current.useStatus).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.statusChangeSuccess'))
         } else {
@@ -352,7 +352,7 @@ export default {
     },
     _updateOperatorRole(roleItem) {
       const data = {
-        operatorId: this.current.id,
+        operatorId: this.current.operatorId,
         roleId: roleItem.id,
         authorized: roleItem.authorized
       }
