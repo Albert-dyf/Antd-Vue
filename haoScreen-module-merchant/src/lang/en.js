@@ -344,14 +344,21 @@ export default {
     createTime: 'Create Time',
     earningsRate: 'Profitability(%)',
     email: 'Admin Account',
+    interfaceType: 'Channel Type',
     level: 'Level',
     lastLoginTime: 'Last Login Time',
+    limitedAmount: 'Platform Amount',
     merchantName: 'Merchant Name',
     merchantDescribe: 'Merchant Describe',
     nickName: 'Nickname',
     operatorCountLimit: 'Operator Count Limit',
+    orderTime: 'Order Time',
+    orderSaleAmount: 'Order Amount',
+    orderCommissionAmount: 'Order Commission',
     password: 'Password',
-    stateSwitch: 'Enable/Disable'
+    stateSwitch: 'Enable/Disable',
+    screenType: 'Screen Type',
+    totalCount: 'Total Count'
   },
   business: {
     addCustomer: 'Add Customer',

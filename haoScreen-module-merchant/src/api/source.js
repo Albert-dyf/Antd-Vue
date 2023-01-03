@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
-const root = '/manager/api/haoScreen/module/manager/api/resource/manage'
+const root = '/merchant/api/haoScreen/module/merchant/api/resource/manage'
 const providerPre = root + '/provider/base'
 const channelPre = root + '/channel/base'
-const routingPre = root + '/channel/routing'
+const routingPre = root + '/quotation/merchant'
 
 /**
  * get

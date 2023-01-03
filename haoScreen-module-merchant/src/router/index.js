@@ -7,7 +7,7 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-// import businessManage from './modules/business'
+import businessManage from './modules/business'
 import superManage from './modules/super'
 import sourceManage from './modules/source'
 import serviceManage from './modules/service'
@@ -67,7 +67,7 @@ export const asyncRoutes = [
   superManage,
   sourceManage,
   merchantManage,
-  // businessManage,
+  businessManage,
   serviceManage,
   reportManage,
   LogManage,

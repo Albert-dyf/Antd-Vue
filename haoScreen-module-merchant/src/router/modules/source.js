@@ -24,15 +24,15 @@ const sourceManage = {
         title: 'channelManage',
         breadcrumb: true
       }
+    },
+    {
+      path: '/source/routing',
+      component: () => import('@/views/source/routing'),
+      meta: {
+        title: 'channelRouting',
+        breadcrumb: true
+      }
     }
-    // {
-    //   path: '/source/routing',
-    //   component: () => import('@/views/source/routing'),
-    //   meta: {
-    //     title: 'channelRouting',
-    //     breadcrumb: true
-    //   }
-    // }
   ]
 }
 

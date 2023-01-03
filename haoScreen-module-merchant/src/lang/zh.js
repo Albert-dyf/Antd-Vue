@@ -88,6 +88,8 @@ export default {
     providerBillDetail: '供应商账单',
     back: '返回',
     distributorRouting: '分销商报价',
+    commission: '佣金',
+    distributorCommission: '分销商佣金',
     setAllRouting: '一键报价',
     setAccount: '设置账号',
     deleteAccount: '删除账号'
@@ -332,6 +334,8 @@ export default {
     handleMaxSize: '最大提交量',
     interfaceUrl: '接口地址',
     interfaceType: '通道类型',
+    limitedPrice: '限制价格',
+    lastUpdateTime: '报价时间',
     modifyAppSecret: '修改密钥',
     providerName: '供应商名称',
     providerCode: '供应商编号',
@@ -353,14 +357,21 @@ export default {
     createTime: '创建时间',
     earningsRate: '计划盈利率(%)',
     email: '超管账号',
+    interfaceType: '通道类型',
     level: '商户等级',
     lastLoginTime: '上次登录时间',
+    limitedAmount: '平台销售额',
     merchantName: '分销商名称',
     merchantDescribe: '商户备注',
     nickName: '账户昵称',
     operatorCountLimit: '人数限制',
+    orderTime: '订单时间',
+    orderSaleAmount: '商户销售额',
+    orderCommissionAmount: '订单佣金',
     password: '密码',
-    stateSwitch: '启用/禁用'
+    stateSwitch: '启用/禁用',
+    screenType: '筛查类型',
+    totalCount: '任务总数'
   },
   // 商务管理
   business: {

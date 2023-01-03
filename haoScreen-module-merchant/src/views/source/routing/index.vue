@@ -6,11 +6,6 @@
           <starlink-date-picker v-if="false" :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.waiterId" :placeholder="$t('select.waiterPlaceholder')" clearable @visible-change="hanleWaiterSelectVisible">
-              <el-option v-for="waiter in waiters" :key="waiter.id" :label="waiter.nickName || waiter.email" :value="waiter.id" />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
             <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable>
               <el-option v-for="screenType in screenTypes" :key="screenType.value" :label="screenType.name" :value="screenType.value"></el-option>
             </el-select>
@@ -76,7 +71,6 @@
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import { getRoutingList, updateRoutingStatus } from '@/api/source'
 import { syncPages, parseEnumValue, parseMoney } from '@/utils'
-import { getOperatorList } from '@/api/commen-resource'
 
 export default {
   components: {
@@ -95,20 +89,15 @@ export default {
           type: 'enum',
           valueEnum: []
         },
-        waiterName: {},
-        priceCost: {
-          type: 'money'
-        },
-        priceBase: {
-          type: 'money'
-        },
-        priceSale: {
+        limitedPrice: {
           type: 'money'
         },
         useStatus: {
           type: 'switch'
         },
-        createTime: {}
+        handleMinSize: {},
+        handleMaxSize: {},
+        lastUpdateTime: {}
       },
 
       // page data
@@ -120,26 +109,19 @@ export default {
       searchForm: {
         searchKey: '',
         screenType: '',
-        interfaceType: '',
-        waiterId: ''
+        interfaceType: ''
       },
       isLoading: false,
       tableData: [],
       current: {},
       screenTypes: [],
-      interfaceTypes: [],
-      waitersPages: {
-        pageNumber: 1,
-        pageSize: 100
-      },
-      waiters: []
+      interfaceTypes: []
     }
   },
   computed: {},
   watch: {},
   async created() {
     await this._getRoutingList()
-    await this._getOperatorList()
   },
   mounted() {},
   methods: {
@@ -175,16 +157,6 @@ export default {
         } else {
           this.$message.error(res.msg)
           this.current.useStatus = this.current.useStatus === 1 ? 2 : 1
-        }
-      })
-    },
-    async _getOperatorList() {
-      const param = { ...this.waitersPages }
-      await getOperatorList(param).then(res => {
-        if (res.code === 200) {
-          this.waiters = res.data.rows
-        } else {
-          this.$message.error(res.msg)
         }
       })
     },
