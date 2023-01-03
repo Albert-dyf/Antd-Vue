@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-const root = '/manager/api/haoScreen/module/manager/api/merchant/manage'
+const root = '/merchant/api/haoScreen/module/merchant/api/merchant/manage'
 const basePre = root + '/distributor/base'
 const quotationPre = root + '/merchant/quotation'
-const operatorPre = root + '/merChant/operator'
+const operatorPre = root + '/merchant/operator'
+const commissionPre = root + '/distributor/commission'
 
 /**
  * get
@@ -29,6 +30,13 @@ export function getOperators(params) {
   })
 }
 
+export function getCommissionList(params) {
+  return request(commissionPre + '/list', {
+    method: 'get',
+    params
+  })
+}
+
 /**
  * add
  */
@@ -40,7 +48,7 @@ export function addDistributor(data) {
 }
 
 export function addOperator(data) {
-  return request(operatorPre + '/add', {
+  return request(operatorPre + '/set', {
     method: 'post',
     params: { ...data }
   })
@@ -49,11 +57,11 @@ export function addOperator(data) {
 /**
  * update
  */
-export function updateDistributor(id, enable) {
+export function updateDistributor(merchantId, enable) {
   const url = enable ? '/enable' : '/disable'
   return request(basePre + url, {
-    method: 'post',
-    params: { id }
+    method: 'put',
+    params: { merchantId }
   })
 }
 
