@@ -74,7 +74,8 @@
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
-import { getCustomerBillList, getProviderBillList } from '@/api/commen-resource'
+import { getProviderBillList } from '@/api/commen-resource'
+import { getCustomerBillList } from '@/api/business'
 import { parseEnumValue, parseMoney, syncPages } from '@/utils'
 
 export default {

@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-const root = '/manager/api/haoScreen/module/manager/api/business/manage'
-const customerPre = root + '/customer/base/mine'
-const taskPre = root + '/screen/task/mine'
+const root = '/merchant/api/haoScreen/module/merchant/api/business/manage'
+const customerPre = root + '/customer/mine/base'
+const taskPre = root + '/customer/mine/task'
 const routingPre = root + '/channel/routing/mine'
+const billPre = root + '/customer/mine/balance/log'
 
 /**
  * get
@@ -33,6 +34,13 @@ export function getRoutingById(routingId) {
   return request(routingPre + '/initModifyAll', {
     method: 'get',
     params: { routingId }
+  })
+}
+
+export function getCustomerBillList(params) {
+  return request(billPre + '/list', {
+    method: 'get',
+    params
   })
 }
 
