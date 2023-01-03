@@ -48,6 +48,7 @@
           <el-table-column :label="$t('common.option')">
             <template slot-scope="scope">
               <el-button type="text" @click="handleClickRoute(scope.row)">{{ $t('common.offerDetail') }}</el-button>
+              <el-button type="text" @click="handleClickCommission(scope.row)">{{ $t('common.commission') }}</el-button>
               <el-popconfirm
                 :title="$t('popMessage.deleteTip')"
                 :confirm-button-text="$t('common.confirm')"
@@ -100,19 +101,25 @@
     <transition name="fade-transform" mode="out-in">
       <routing v-if="routingDetailVisible" :distributor-id="current.merchantId" @backToTable="handleBack" />
     </transition>
+
+    <transition name="fade-transform" mode="out-in">
+      <distributor-commission v-if="commissionVisible" :distributor-id="current.merchantId" @backToTable="handleBack" />
+    </transition>
   </el-container>
 </template>
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import Routing from './components/routing.vue'
+import DistributorCommission from './components/commission.vue'
 import { addDistributor, getDistributors, updateDistributor, deleteDistributor } from '@/api/merchant'
 import { syncPages } from '@/utils'
 
 export default {
   components: {
     StarlinkDatePicker,
-    Routing
+    Routing,
+    DistributorCommission
   },
   data() {
     return {
@@ -165,7 +172,9 @@ export default {
       },
 
       // routing Detail
-      routingDetailVisible: false
+      routingDetailVisible: false,
+      // commssion
+      commissionVisible: false
     }
   },
   computed: {},
@@ -244,6 +253,10 @@ export default {
       this.current = data
       this.routingDetailVisible = true
     },
+    handleClickCommission(data) {
+      this.current = data
+      this.commissionVisible = true
+    },
     handleClickDelete(data) {
       this.current = data
     },
@@ -252,6 +265,7 @@ export default {
     },
     handleBack() {
       this.routingDetailVisible = false
+      this.commissionVisible = false
     },
     handleChangePageSize() {
       this._getDistributors()
