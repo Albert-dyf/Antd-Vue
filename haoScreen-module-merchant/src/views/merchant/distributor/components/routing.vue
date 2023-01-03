@@ -112,36 +112,12 @@
         <el-button type="primary" @click="handleClickSubmit">{{ $t('common.submit') }}</el-button>
       </el-footer>
     </el-dialog>
-
-    <!-- edit -->
-    <el-dialog
-      :visible.sync="editDialogVisible"
-      :title="$t('business.editOffer')"
-      width="30vw"
-      custom-class="edit-offer-dialog"
-    >
-      <el-form
-        ref="editOfferFormRef"
-        :model="editOfferForm"
-        :rules="editOfferFormRules"
-        label-width="120px"
-        label-position="right"
-      >
-        <el-form-item :label="$t('business.channelId')"><el-input v-model="editOfferForm.channelName" disabled /></el-form-item>
-        <el-form-item :label="$t('business.priceSale')" prop="priceSale"><el-input v-model="editOfferForm.priceSale" /></el-form-item>
-      </el-form>
-      <el-footer slot="footer">
-        <el-button @click="editDialogVisible = false">{{ $t('common.cancel') }}</el-button>
-        <el-button type="primary" @click="handleClickSubmitEdit">{{ $t('common.submit') }}</el-button>
-      </el-footer>
-    </el-dialog>
   </el-container>
 </template>
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import { getDistributorRoutings, updateDistributorRouting, updateDistributorRoutingAll } from '@/api/merchant'
-import { getRoutingById } from '@/api/business'
 import { syncPages, parseEnumValue, parseMoney } from '@/utils'
 
 export default {
@@ -169,9 +145,6 @@ export default {
           valueEnum: []
         },
         priceCost: {
-          type: 'money'
-        },
-        priceBase: {
           type: 'money'
         },
         limitedPrice: {
@@ -218,18 +191,6 @@ export default {
         ]
       },
 
-      // edit offer data
-      editDialogVisible: false,
-      editOfferForm: {
-        channelName: '',
-        priceSale: ''
-      },
-      editOfferFormRules: {
-        priceSale: [
-          { required: true, message: this.$t('business.priceSale') + this.$t('validator.isRequired'), trigger: ['blur', 'change'] }
-        ]
-      },
-
       // common data
       screenTypes: [],
       interfaceTypes: [],
@@ -241,12 +202,6 @@ export default {
     addDialogVisible(val) {
       if (!val) {
         this.$refs.addOfferFormRef.resetFields()
-        this.current = {}
-      }
-    },
-    editDialogVisible(val) {
-      if (!val) {
-        this.$refs.editOfferFormRef.resetFields()
         this.current = {}
       }
     }
@@ -296,18 +251,6 @@ export default {
           this.$message.success(this.$t('popMessage.addRoutingSuccess'))
           this.addDialogVisible = false
           this._getRoutingList()
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
-    },
-    async _getRoutingById() {
-      await getRoutingById(this.current.routingId).then(res => {
-        if (res.code === 200) {
-          Object.keys(this.editOfferForm).forEach(key => {
-            this.editOfferForm[key] = res.data.object[key]
-          })
-          this.editOfferForm.priceSale = parseMoney(res.data.object.priceSale)
         } else {
           this.$message.error(res.msg)
         }
