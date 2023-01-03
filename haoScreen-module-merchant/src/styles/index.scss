@@ -1,0 +1,103 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './element-variables.scss';
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  // font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  // font-family: tahoma, arial, Hiragino Sans GB, '\5b8b\4f53', sans-serif;
+  // font: 12px/1.5 'helvetica neue',tahoma,'PingFang SC','microsoft yahei',arial,'hiragino sans gb',sans-serif;
+  font: 12px/1.5 "Helvetica Neue", "Helvetica", "tahoma","Arial", "PingFang SC","Hiragino Sans GB","STHeiti","Microsoft YaHei","WenQuanYi Micro Hei","sans-serif";
+}
+
+label {
+  font-weight: 700;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+// main-container global css
+.app-container {
+  padding: 20px;
+}
+
+
+// 统一滚动条样式
+::-webkit-scrollbar {
+  width: 7px;
+  height: 5px;
+  border-radius:15px;
+  -webkit-border-radius:  15px;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: #ffff;
+  border-radius:15px;
+  -webkit-border-radius:  15px;
+}
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  background-color: rgba(144, 147, 153, 0.5);
+  border-radius: 15px;
+  -webkit-border-radius:  15px;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  width: 7px;
+  background-color: rgba(144, 147, 153, 0.5);
+  border-radius:  15px;
+  -webkit-border-radius: 15px;
+}
+
+
+.el-table .cell {
+  section {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
