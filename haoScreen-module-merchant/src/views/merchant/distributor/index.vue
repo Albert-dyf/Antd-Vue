@@ -99,11 +99,11 @@
     </el-dialog>
 
     <transition name="fade-transform" mode="out-in">
-      <routing v-if="routingDetailVisible" :distributor-id="current.merchantId" @backToTable="handleBack" />
+      <routing v-if="routingDetailVisible" :distributor="current" @backToTable="handleBack" />
     </transition>
 
     <transition name="fade-transform" mode="out-in">
-      <distributor-commission v-if="commissionVisible" :distributor-id="current.merchantId" @backToTable="handleBack" />
+      <distributor-commission v-if="commissionVisible" :distributor="current" @backToTable="handleBack" />
     </transition>
   </el-container>
 </template>

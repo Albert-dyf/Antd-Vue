@@ -1,7 +1,7 @@
 <template>
   <el-container class="merchant-routing-wrapper common-container">
     <el-main class="merchant-routing-content common-body">
-      <el-page-header :title="$t('common.back')" :content="$t('common.distributorRouting')" @back="handleBack" />
+      <el-page-header :title="$t('common.back')" :content="$t('common.distributorRouting') + ' - ' + distributor.merchantName" @back="handleBack" />
 
       <el-row class="merchant-routing-search">
         <el-form inline size="small">
@@ -49,7 +49,7 @@
                 v-model="scope.row[attr]"
                 :active-value="1"
                 :inactive-value="0"
-                :disabled="scope.row.earningsRate === null"
+                :disabled="scope.row.quotationId === null"
                 @change="handleStatusChange(scope.row)"
               ></el-switch>
               <span v-else-if="tableItemAttr[attr].type === 'enum'">
@@ -127,9 +127,11 @@ export default {
     StarlinkDatePicker
   },
   props: {
-    distributorId: {
-      type: String,
-      default: ''
+    distributor: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   data() {
@@ -221,7 +223,7 @@ export default {
         ...this.searchForm
       }
       delete param.total
-      param.merchantId = this.distributorId
+      param.merchantId = this.distributor.merchantId
       await getDistributorRoutings(param).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.rows
@@ -243,7 +245,7 @@ export default {
       const data = {
         channelId: this.current.channelId,
         earningsRate: this.addOfferForm.earningsRate,
-        merchantId: this.distributorId
+        merchantId: this.distributor.merchantId
       }
       await updateDistributorRouting(data).then(res => {
         if (res.code === 200) {
@@ -258,7 +260,7 @@ export default {
     async _updateAllRouting() {
       const data = {
         earningsRate: this.addOfferForm.earningsRate,
-        merchantId: this.distributorId
+        merchantId: this.distributor.merchantId
       }
       await updateDistributorRoutingAll(data).then(res => {
         if (res.code === 200) {

@@ -1,7 +1,7 @@
 <template>
   <el-container class="distributor-commission-wrapper common-container">
     <el-main class="distributor-commission-content common-body">
-      <el-page-header :title="$t('common.back')" :content="$t('common.distributorCommission')" @back="handleBack" />
+      <el-page-header :title="$t('common.back')" :content="$t('common.distributorCommission') + ' - ' + distributor.merchantName" @back="handleBack" />
 
       <el-row class="distributor-commission-search">
         <el-form inline size="small">
@@ -65,9 +65,11 @@ export default {
     StarlinkDatePicker
   },
   props: {
-    distributorId: {
-      type: String,
-      default: ''
+    distributor: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   data() {
@@ -132,7 +134,7 @@ export default {
         ...this.searchForm
       }
       delete param.total
-      param.merchantId = this.distributorId
+      param.merchantId = this.distributor.merchantId
       await getCommissionList(param).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.rows
