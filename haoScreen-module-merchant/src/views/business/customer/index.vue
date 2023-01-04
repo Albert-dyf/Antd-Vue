@@ -27,7 +27,14 @@
             :label="$t('business.' + attr)"
           >
             <template slot-scope="scope">
-              <span v-if="tableItemAttr[attr].type === 'money'">
+              <el-switch
+                v-if="tableItemAttr[attr].type === 'switch'"
+                v-model="scope.row[attr]"
+                :active-value="1"
+                :inactive-value="0"
+                @change="handleStatusChange(scope.row)"
+              ></el-switch>
+              <span v-else-if="tableItemAttr[attr].type === 'money'">
                 {{ parseMoney(scope.row[attr]) }}
               </span>
               <span v-else>{{ scope.row[attr] || '-' }}</span>
@@ -36,6 +43,14 @@
           <el-table-column :label="$t('common.option')">
             <template slot-scope="scope">
               <el-button type="text" @click="handleClickBill(scope.row)">{{ $t('common.bill') }}</el-button>
+              <!-- <el-popconfirm
+                :title="$t('popMessage.resetPwdTip')"
+                :confirm-button-text="$t('common.confirm')"
+                :cancel-button-text="$t('common.cancel')"
+                @onConfirm="handleConfirmResetPwd"
+              >
+                <el-button slot="reference" class="delete-btn" type="text" @click="handleClickResetPwd(scope.row)">{{ $t('business.resetPwd') }}</el-button>
+              </el-popconfirm> -->
               <el-popconfirm
                 :title="$t('popMessage.deleteTip')"
                 :confirm-button-text="$t('common.confirm')"
@@ -86,7 +101,7 @@
     </el-dialog>
 
     <transition name="fade-transform" mode="out-in">
-      <bill-panel v-if="showBillPanel" :customer-id="current.customerId" @backToTable="handleBack" />
+      <bill-panel v-if="showBillPanel" :customer="current" @backToTable="handleBack" />
     </transition>
   </el-container>
 </template>
@@ -94,7 +109,7 @@
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import BillPanel from '@/components/BillPanel'
-import { getCustomerList, addCustomer, deleteCustomer } from '@/api/business'
+import { getCustomerList, addCustomer, deleteCustomer, updateCustomerStatus } from '@/api/business'
 import { getEncryptorPublicKey } from '@/api/commen-resource'
 import JSEncrypt from 'jsencrypt'
 import { parseMoney, syncPages } from '@/utils'
@@ -130,6 +145,9 @@ export default {
         balance: {
           type: 'money'
         },
+        useStatus: {
+          type: 'switch'
+        },
         createTime: {},
         lastLoginTime: {}
       },
@@ -145,7 +163,6 @@ export default {
         // endTime: '',
         searchKey: ''
       },
-      status: ['禁用', '启用'],
       isLoading: false,
       tableData: [],
       current: {},
@@ -244,6 +261,16 @@ export default {
         }
       })
     },
+    _updateCustomerStatus() {
+      updateCustomerStatus(this.current.customerId, this.current.useStatus).then(res => {
+        if (res.code === 200) {
+          this.$message.success(this.$t('popMessage.statusChangeSuccess'))
+          this._getCustomerList()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
 
     // handler
     handleClickSearch() {
@@ -278,6 +305,10 @@ export default {
     },
     handleBack() {
       this.showBillPanel = false
+    },
+    handleStatusChange(data) {
+      this.current = data
+      this._updateCustomerStatus()
     }
   }
 }

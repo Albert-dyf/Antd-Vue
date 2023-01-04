@@ -71,6 +71,14 @@ export function updateRouting(data) {
   })
 }
 
+export function updateCustomerStatus(customerId, enable) {
+  const url = enable ? '/enable' : '/disable'
+  return request(customerPre + url, {
+    method: 'post',
+    params: { customerId }
+  })
+}
+
 /**
  * delete
  */

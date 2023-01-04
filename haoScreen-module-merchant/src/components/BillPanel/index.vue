@@ -1,14 +1,14 @@
 <template>
   <el-container class="bill-panel-wrapper common-container">
     <el-main class="bill-panel-content common-body">
-      <el-page-header :title="$t('common.back')" :content="customerId !== '' ? $t('common.customerBillDetail') : $t('common.providerBillDetail')" @back="handleBack" />
+      <el-page-header :title="$t('common.back')" :content="customer !== {} ? $t('common.customerBillDetail') + ' - ' + customer.nickName : $t('common.providerBillDetail')" @back="handleBack" />
 
       <el-row class="bill-panel-search">
         <el-form inline size="small">
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.changeType" :placeholder="$t('select.changeTypePlaceholder')" clearable>
+            <el-select v-model="searchForm.balanceChangeType" :placeholder="$t('select.changeTypePlaceholder')" clearable>
               <el-option v-for="changeType in changeTypes" :key="changeType.value" :label="changeType.name" :value="changeType.value"></el-option>
             </el-select>
           </el-form-item>
@@ -84,13 +84,17 @@ export default {
     StarlinkDatePicker
   },
   props: {
-    customerId: {
-      type: String,
-      default: ''
+    customer: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
-    providerId: {
-      type: String,
-      default: ''
+    provider: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   data() {
@@ -124,7 +128,7 @@ export default {
         startTime: '',
         endTime: '',
         searchKey: '',
-        changeType: ''
+        balanceChangeType: ''
       },
       isLoading: false,
       tableData: [],
@@ -142,10 +146,10 @@ export default {
     // util
     parseMoney,
     async searchData() {
-      if (this.customerId !== '') {
+      if (this.customer.customerId) {
         await this._getCustomerBillList()
       }
-      if (this.providerId !== '') {
+      if (this.provider.providerId) {
         await this._getProviderBillList()
       }
     },
@@ -158,7 +162,7 @@ export default {
         ...this.searchForm
       }
       delete param.total
-      param.customerId = this.customerId
+      param.customerId = this.customer.customerId
       await getCustomerBillList(param).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.rows
@@ -178,7 +182,7 @@ export default {
         ...this.searchForm
       }
       delete param.total
-      param.providerId = this.providerId
+      param.providerId = this.provider.providerId
       await getProviderBillList(param).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.rows

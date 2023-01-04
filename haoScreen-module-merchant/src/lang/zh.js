@@ -92,7 +92,8 @@ export default {
     distributorCommission: '分销商佣金',
     setAllRouting: '一键报价',
     setAccount: '设置账号',
-    deleteAccount: '删除账号'
+    deleteAccount: '删除账号',
+    resetPwd: '重置密码'
   },
   // 弹出信息
   popMessage: {

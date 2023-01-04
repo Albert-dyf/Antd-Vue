@@ -88,7 +88,8 @@ export default {
     distributorRouting: 'Distributor Routing',
     setAllRouting: '一键报价',
     setAccount: 'Account',
-    deleteAccount: 'Delete Account'
+    deleteAccount: 'Delete Account',
+    resetPwd: 'Reset Password'
   },
   popMessage: {
     addUserSuccess: 'Add User Success !',
