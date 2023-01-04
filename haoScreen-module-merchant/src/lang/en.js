@@ -400,6 +400,7 @@ export default {
     resetPwd: 'Reset Password',
     stateSwitch: 'Enable/Disable',
     screenType: 'Screen Type',
+    salePrice: 'Sale Price',
     taskName: 'Task Name',
     taskStatus: 'Task Status',
     totalCount: 'Total Count',

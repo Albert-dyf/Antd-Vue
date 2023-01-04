@@ -1,7 +1,9 @@
 <template>
-  <el-container class="business-offer-wrapper common-container">
-    <el-main class="business-offer-content common-body">
-      <el-row>
+  <el-container class="customer-routing-wrapper common-container">
+    <el-main class="customer-routing-content common-body">
+      <el-page-header :title="$t('common.back')" :content="$t('common.offerDetail') + ' - ' + customer.nickName" @back="handleBack" />
+
+      <el-row class="customer-routing-search">
         <el-form inline size="small">
           <starlink-date-picker v-if="false" :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
@@ -11,7 +13,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.interfaceType" :placeholder="$t('select.interfaceTypePlaceholder')" clearable>
+            <el-select v-model="searchForm.channelType" :placeholder="$t('select.interfaceTypePlaceholder')" clearable>
               <el-option v-for="interfaceType in interfaceTypes" :key="interfaceType.value" :label="interfaceType.name" :value="interfaceType.value"></el-option>
             </el-select>
           </el-form-item>
@@ -24,8 +26,8 @@
         </el-form>
       </el-row>
 
-      <el-row v-if="false" class="table-tool-bar">
-        <el-button type="primary" size="small" @click="handleClickAdd">{{ '+ ' + $t('common.add') }}</el-button>
+      <el-row class="table-tool-bar">
+        <el-button type="primary" size="small" @click="handleClickSetAll">{{ $t('common.setAllRouting') }}</el-button>
       </el-row>
 
       <el-row>
@@ -47,6 +49,7 @@
                 v-model="scope.row[attr]"
                 :active-value="1"
                 :inactive-value="0"
+                :disabled="scope.row.quotationId === null"
                 @change="handleStatusChange(scope.row)"
               ></el-switch>
               <span v-else-if="tableItemAttr[attr].type === 'enum'">
@@ -58,23 +61,15 @@
               <span v-else-if="tableItemAttr[attr].type === 'money'">
                 {{ parseMoney(scope.row[attr]) || $t('business.noOffer') }}
               </span>
+              <span v-else-if="attr === 'earningsRate'">
+                {{ scope.row.salePrice ? Math.round((scope.row.salePrice - scope.row.limitedPrice) / scope.row.limitedPrice * 100) : '-' }}
+              </span>
               <span v-else>{{ scope.row[attr] || '-' }}</span>
             </template>
           </el-table-column>
           <el-table-column :label="$t('common.option')">
             <template slot-scope="scope">
-              <el-button v-if="!scope.row.priceSale" type="text" size="small" @click="handleClickAdd(scope.row)">{{ $t('common.offer') }}</el-button>
-              <span v-else>
-                <el-button type="text" @click="handleClickEdit(scope.row)">{{ $t('common.edit') }}</el-button>
-                <el-popconfirm
-                  :title="$t('popMessage.undoOfferTip')"
-                  :confirm-button-text="$t('common.confirm')"
-                  :cancel-button-text="$t('common.cancel')"
-                  @onConfirm="handleConfirmUndo"
-                >
-                  <el-button slot="reference" class="delete-btn" type="text" @click="handleClickUndo(scope.row)">{{ $t('common.undo') }}</el-button>
-                </el-popconfirm>
-              </span>
+              <el-button type="text" size="small" @click="handleClickSetSingle(scope.row)">{{ $t('common.offer') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -95,9 +90,11 @@
     <!-- add -->
     <el-dialog
       :visible.sync="addDialogVisible"
-      :title="$t('business.addOffer')"
+      :title="addOfferForm.channelName ? $t('business.addOffer') : $t('common.setAllRouting')"
       width="30vw"
       custom-class="add-offer-dialog"
+      :append-to-body="true"
+      :modal-append-to-body="true"
     >
       <el-form
         ref="addOfferFormRef"
@@ -106,35 +103,14 @@
         label-width="120px"
         label-position="right"
       >
-        <el-form-item :label="$t('business.channelId')"><el-input v-model="addOfferForm.channelName" disabled /></el-form-item>
-        <el-form-item :label="$t('business.priceSale')" prop="priceSale"><el-input v-model="addOfferForm.priceSale" /></el-form-item>
+        <el-form-item v-if="addOfferForm.channelName" :label="$t('business.channelId')"><el-input v-model="addOfferForm.channelName" disabled /></el-form-item>
+        <el-form-item :label="$t('merchant.earningsRate')" prop="earningsRate">
+          <el-slider v-model="addOfferForm.earningsRate" show-input />
+        </el-form-item>
       </el-form>
       <el-footer slot="footer">
         <el-button @click="addDialogVisible = false">{{ $t('common.cancel') }}</el-button>
         <el-button type="primary" @click="handleClickSubmit">{{ $t('common.submit') }}</el-button>
-      </el-footer>
-    </el-dialog>
-
-    <!-- edit -->
-    <el-dialog
-      :visible.sync="editDialogVisible"
-      :title="$t('business.editOffer')"
-      width="30vw"
-      custom-class="edit-offer-dialog"
-    >
-      <el-form
-        ref="editOfferFormRef"
-        :model="editOfferForm"
-        :rules="editOfferFormRules"
-        label-width="120px"
-        label-position="right"
-      >
-        <el-form-item :label="$t('business.channelId')"><el-input v-model="editOfferForm.channelName" disabled /></el-form-item>
-        <el-form-item :label="$t('business.priceSale')" prop="priceSale"><el-input v-model="editOfferForm.priceSale" /></el-form-item>
-      </el-form>
-      <el-footer slot="footer">
-        <el-button @click="editDialogVisible = false">{{ $t('common.cancel') }}</el-button>
-        <el-button type="primary" @click="handleClickSubmitEdit">{{ $t('common.submit') }}</el-button>
       </el-footer>
     </el-dialog>
   </el-container>
@@ -142,12 +118,21 @@
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
-import { getRoutingList, addRouting, getRoutingById, undoRouting, updateRouting } from '@/api/business'
-import { syncPages, parseEnumValue, reverseMoney, parseMoney } from '@/utils'
+import { getCustomerRouting, updateCustomerRouting, updateCustomerRoutingAll, updateRoutingStatus } from '@/api/business'
+import { syncPages, parseEnumValue, parseMoney } from '@/utils'
 
 export default {
+  name: 'Routing',
   components: {
     StarlinkDatePicker
+  },
+  props: {
+    customer: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
   },
   data() {
     return {
@@ -162,19 +147,18 @@ export default {
           type: 'enum',
           valueEnum: []
         },
-        priceBase: {
+        limitedPrice: {
           type: 'money'
         },
-        priceSale: {
+        salePrice: {
           type: 'money'
         },
-        createTime: {
+        earningsRate: {},
+        lastUpdateTime: {
           i18n: 'offerTime'
         },
         useStatus: {
-          type: 'enum',
-          colorEnum: ['danger', 'success', 'warning', 'danger'],
-          valueEnum: []
+          type: 'switch'
         }
       },
 
@@ -187,7 +171,7 @@ export default {
       searchForm: {
         // startTime: '',
         // endTime: '',
-        interfaceType: '',
+        channelType: '',
         searchKey: '',
         screenType: '',
         useStatus: ''
@@ -199,23 +183,11 @@ export default {
       // add offer data
       addDialogVisible: false,
       addOfferForm: {
-        priceSale: ''
+        earningsRate: 0
       },
       addOfferFormRules: {
-        priceSale: [
-          { required: true, message: this.$t('business.priceSale') + this.$t('validator.isRequired'), trigger: ['blur', 'change'] }
-        ]
-      },
-
-      // edit offer data
-      editDialogVisible: false,
-      editOfferForm: {
-        channelName: '',
-        priceSale: ''
-      },
-      editOfferFormRules: {
-        priceSale: [
-          { required: true, message: this.$t('business.priceSale') + this.$t('validator.isRequired'), trigger: ['blur', 'change'] }
+        earningsRate: [
+          { required: true, message: this.$t('merchant.earningsRate') + this.$t('validator.isRequired'), trigger: ['blur', 'change'] }
         ]
       },
 
@@ -232,16 +204,10 @@ export default {
         this.$refs.addOfferFormRef.resetFields()
         this.current = {}
       }
-    },
-    editDialogVisible(val) {
-      if (!val) {
-        this.$refs.editOfferFormRef.resetFields()
-        this.current = {}
-      }
     }
   },
-  async created() {
-    await this._getRoutingList()
+  created() {
+    this._getRoutingList()
   },
   mounted() {},
   methods: {
@@ -256,7 +222,8 @@ export default {
         ...this.searchForm
       }
       delete param.total
-      await getRoutingList(param).then(res => {
+      param.customerId = this.customer.customerId
+      await getCustomerRouting(param).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.rows
           this.tableItemAttr.screenType.valueEnum = parseEnumValue(res.data.params.EnumScreenType)
@@ -273,12 +240,13 @@ export default {
       })
       this.isLoading = false
     },
-    async _addRouting() {
+    async _updateCustomerRouting() {
       const data = {
         channelId: this.current.channelId,
-        priceSale: reverseMoney(this.addOfferForm.priceSale)
+        earningsRate: this.addOfferForm.earningsRate,
+        customerId: this.customer.customerId
       }
-      addRouting(data).then(res => {
+      await updateCustomerRouting(data).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.addRoutingSuccess'))
           this.addDialogVisible = false
@@ -288,37 +256,25 @@ export default {
         }
       })
     },
-    async _getRoutingById() {
-      await getRoutingById(this.current.routingId).then(res => {
+    async _updateAllRouting() {
+      const data = {
+        earningsRate: this.addOfferForm.earningsRate,
+        customerId: this.customer.customerId
+      }
+      await updateCustomerRoutingAll(data).then(res => {
         if (res.code === 200) {
-          Object.keys(this.editOfferForm).forEach(key => {
-            this.editOfferForm[key] = res.data.object[key]
-          })
-          this.editOfferForm.priceSale = parseMoney(res.data.object.priceSale)
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
-    },
-    async _undoRouting() {
-      await undoRouting(this.current.routingId).then(res => {
-        if (res.code === 200) {
-          this.$message.success(this.$t('popMessage.undoSuccess'))
+          this.$message.success(this.$t('popMessage.updateRoutingSuccess'))
+          this.addDialogVisible = false
           this._getRoutingList()
         } else {
           this.$message.error(res.msg)
         }
       })
     },
-    async _updateRouting() {
-      const data = {
-        priceSale: reverseMoney(this.editOfferForm.priceSale),
-        routingId: this.current.routingId
-      }
-      await updateRouting(data).then(res => {
+    async _updateRoutingStatus() {
+      await updateRoutingStatus(this.current.quotationId, this.current.useStatus).then(res => {
         if (res.code === 200) {
-          this.$message.success(this.$t('popMessage.updateRoutingSuccess'))
-          this.editDialogVisible = false
+          this.$message.success(this.$t('popMessage.statusChangeSuccess'))
           this._getRoutingList()
         } else {
           this.$message.error(res.msg)
@@ -327,36 +283,30 @@ export default {
     },
 
     // handler
+    handleBack() {
+      this.$emit('backToTable')
+    },
     handleClickSearch() {
       this._getRoutingList()
     },
-    handleClickAdd(data) {
-      this.current = data
-      this.addOfferForm.channelName = data.channelName
+    handleClickSetAll() {
+      this.current = {}
+      this.addOfferForm = {}
       this.addDialogVisible = true
     },
-    async handleClickEdit(data) {
+    handleClickSetSingle(data) {
       this.current = data
-      await this._getRoutingById()
-      this.editDialogVisible = true
-    },
-    handleClickUndo(data) {
-      this.current = data
-    },
-    handleConfirmUndo() {
-      this._undoRouting()
+      this.addOfferForm.channelName = this.current.channelName
+      this.addDialogVisible = true
     },
     handleClickSubmit() {
       this.$refs.addOfferFormRef.validate(valid => {
         if (valid) {
-          this._addRouting()
-        }
-      })
-    },
-    handleClickSubmitEdit() {
-      this.$refs.editOfferFormRef.validate(valid => {
-        if (valid) {
-          this._updateRouting()
+          if (this.addOfferForm.channelName) {
+            this._updateCustomerRouting()
+          } else {
+            this._updateAllRouting()
+          }
         }
       })
     },
@@ -366,20 +316,35 @@ export default {
     hanldeChangeCurrentPage() {
       this._getRoutingList()
     },
-    handleStatusChange() {}
+    handleStatusChange(data) {
+      this.current = data
+      this._updateRoutingStatus()
+    }
   }
 }
 </script>
 
 <style lang='scss' scoped>
-.business-offer-wrapper {
-  .add-offer-dialog, .edit-offer-dialog {
-    .el-form {
-      width: 25vw;
+.customer-routing-wrapper {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
 
-      .el-select {
-        width: 100%;
-      }
+  .customer-routing-content {
+    .customer-routing-search {
+      margin: 20px 0 0 0;
+    }
+  }
+}
+.add-offer-dialog, .edit-offer-dialog {
+  .el-form {
+    width: 25vw;
+
+    .el-select {
+      width: 100%;
     }
   }
 }

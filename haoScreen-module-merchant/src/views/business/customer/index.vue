@@ -43,6 +43,7 @@
           <el-table-column :label="$t('common.option')">
             <template slot-scope="scope">
               <el-button type="text" @click="handleClickBill(scope.row)">{{ $t('common.bill') }}</el-button>
+              <el-button type="text" @click="handleClickRouting(scope.row)">{{ $t('common.offer') }}</el-button>
               <!-- <el-popconfirm
                 :title="$t('popMessage.resetPwdTip')"
                 :confirm-button-text="$t('common.confirm')"
@@ -103,12 +104,17 @@
     <transition name="fade-transform" mode="out-in">
       <bill-panel v-if="showBillPanel" :customer="current" @backToTable="handleBack" />
     </transition>
+
+    <transition name="fade-transform" mode="out-in">
+      <routing v-if="routingVisible" :customer="current" @backToTable="handleBack" />
+    </transition>
   </el-container>
 </template>
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import BillPanel from '@/components/BillPanel'
+import Routing from './components/routing.vue'
 import { getCustomerList, addCustomer, deleteCustomer, updateCustomerStatus } from '@/api/business'
 import { getEncryptorPublicKey } from '@/api/commen-resource'
 import JSEncrypt from 'jsencrypt'
@@ -118,7 +124,8 @@ import { isEmail, isPwd } from '@/utils/regex'
 export default {
   components: {
     StarlinkDatePicker,
-    BillPanel
+    BillPanel,
+    Routing
   },
   data() {
     // validator
@@ -192,7 +199,9 @@ export default {
       publicKey: '',
 
       // bill panel
-      showBillPanel: false
+      showBillPanel: false,
+      // routing
+      routingVisible: false
     }
   },
   computed: {},
@@ -305,10 +314,15 @@ export default {
     },
     handleBack() {
       this.showBillPanel = false
+      this.routingVisible = false
     },
     handleStatusChange(data) {
       this.current = data
       this._updateCustomerStatus()
+    },
+    handleClickRouting(data) {
+      this.current = data
+      this.routingVisible = true
     }
   }
 }

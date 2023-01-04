@@ -26,14 +26,6 @@ const businessManage = {
       }
     },
     {
-      path: '/business/routing',
-      component: () => import('@/views/business/routing'),
-      meta: {
-        title: 'myOffer',
-        breadcrumb: true
-      }
-    },
-    {
       path: '/business/achievement',
       component: () => import('@/views/business/achievement'),
       meta: {

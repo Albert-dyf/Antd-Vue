@@ -414,6 +414,7 @@ export default {
     resetPwd: '密码重置',
     stateSwitch: '启用/禁用',
     screenType: '筛查类型',
+    salePrice: '销售报价',
     taskName: '任务名称',
     taskStatus: '任务状态',
     totalCount: '任务总数',
