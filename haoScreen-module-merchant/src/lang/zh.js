@@ -93,7 +93,8 @@ export default {
     setAllRouting: '一键报价',
     setAccount: '设置账号',
     deleteAccount: '删除账号',
-    resetPwd: '重置密码'
+    resetPwd: '重置密码',
+    refreshTask: '刷新任务'
   },
   // 弹出信息
   popMessage: {
@@ -219,7 +220,8 @@ export default {
   },
   search: {
     emailPlaceholder: '请输入用户邮箱搜索',
-    searchKeyPlaceholder: '请输入关键字搜索'
+    searchKeyPlaceholder: '请输入关键字搜索',
+    customerEmailPlaceholder: '输入客户账户进行搜索'
   },
   select: {
     customerPlaceholder: '选择客户',
@@ -386,8 +388,10 @@ export default {
     customerPwd: '客户密码',
     customerNickname: '客户昵称',
     customerPhone: '客户号码',
+    customerEmail: '客户账号',
     createTime: '创建时间',
     country: '国家',
+    countryCode: '国家编码',
     channelId: '选择通道',
     channelName: '通道名称',
     changeType: '账单类型',
@@ -408,6 +412,7 @@ export default {
     orderCostAmount: '销售总价',
     orderSalePrice: '销售单价',
     offerTime: '报价时间',
+    orderSaleAmount: '销售总价',
     priceSale: '销售价格',
     priceBase: '销售限价',
     priceCost: '成本价',

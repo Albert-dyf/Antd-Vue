@@ -6,11 +6,6 @@
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.customerId" :placeholder="$t('select.customerPlaceholder')" clearable>
-              <el-option v-for="customer in customers" :key="customer.customerId" :label="customer.nickName" :value="customer.customerId" />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
             <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable>
               <el-option v-for="(screenType, i) in screenTypes" :key="'screenType' + i" :label="screenType.name" :value="screenType.value" />
             </el-select>
@@ -51,13 +46,18 @@
                   :text-inside="true"
                   :show-text="true"
                   :stroke-width="26"
-                  :percentage="(scope.row.activatedCount / scope.row.finishedCount).toFixed(3) * 100 || 0"
-                  :text="(scope.row.activatedCount + ' / ' + scope.row.finishedCount)"
+                  :percentage="(scope.row.activatedCount / scope.row.totalCount).toFixed(3) * 100 || 0"
+                  :text="(scope.row.activatedCount + ' / ' + scope.row.totalCount)"
                 >
                 </starlink-progress>
               </span>
-              <span v-else-if="attr === 'country'">{{ scope.row.countryNameZh + ' / ' + scope.row.countryNameEn }}</span>
+              <!-- <span v-else-if="attr === 'country'">{{ scope.row.countryNameZh + ' / ' + scope.row.countryNameEn }}</span> -->
               <span v-else>{{ scope.row[attr] }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('common.option')">
+            <template slot-scope="scope">
+              <el-button type="text" @click="handleClickRefresh(scope.row)">{{ $t('common.refreshTask') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -80,7 +80,7 @@
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import StarlinkProgress from '@/components/StarlinkProgress'
-import { getCustomerTask, getCustomerList } from '@/api/business'
+import { getCustomerTask, refreshTaskStatus } from '@/api/business'
 import { syncPages, parseEnumValue, parseMoney } from '@/utils'
 
 export default {
@@ -93,17 +93,17 @@ export default {
       // setup
       tableItemAttr: {
         taskName: {},
-        country: {},
+        countryCode: {},
         screenType: {
           type: 'enum',
           valueEnum: []
         },
-        customerName: {},
+        customerEmail: {},
         activatedCount: {
           i18n: 'activatedCountTotal'
         },
         // totalCount: {},
-        orderCostAmount: {
+        orderSaleAmount: {
           type: 'money'
         },
         orderSalePrice: {
@@ -127,22 +127,19 @@ export default {
         startTime: '',
         endTime: '',
         searchKey: '',
-        taskStatus: '',
-        customerId: ''
+        taskStatus: ''
       },
       taskStatus: [],
       isLoading: false,
       tableData: [],
-      customers: [],
       current: {},
       screenTypes: []
     }
   },
   computed: {},
   watch: {},
-  async created() {
-    await this._getCustomerTask()
-    await this._getCustomerList()
+  created() {
+    this._getCustomerTask()
   },
   mounted() {},
   methods: {
@@ -171,19 +168,16 @@ export default {
       })
       this.isLoading = false
     },
-    async _getCustomerList() {
-      const param = {
-        pageNumber: 1,
-        pageSize: 100
-      }
-      await getCustomerList(param).then(res => {
+    _refreshTaskStatus() {
+      refreshTaskStatus(this.current.taskId).then(res => {
         if (res.code === 200) {
-          this.customers = res.data.rows
+          this.$message.success(this.$t('popMessage.refreshSuccess'))
         } else {
           this.$message.error(res.msg)
         }
       })
     },
+
     // handler
     handleClickSearch() {
       this._getCustomerTask()
@@ -196,6 +190,10 @@ export default {
     },
     hanldeChangeCurrentPage() {
       this._getRoutingList()
+    },
+    handleClickRefresh(data) {
+      this.current = data
+      this._refreshTaskStatus()
     }
   }
 }

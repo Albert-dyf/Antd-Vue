@@ -89,7 +89,8 @@ export default {
     setAllRouting: '一键报价',
     setAccount: 'Account',
     deleteAccount: 'Delete Account',
-    resetPwd: 'Reset Password'
+    resetPwd: 'Reset Password',
+    refreshTask: 'Refresh Task'
   },
   popMessage: {
     addUserSuccess: 'Add User Success !',
@@ -213,7 +214,8 @@ export default {
   },
   search: {
     emailPlaceholder: 'Please input user email to search',
-    searchKeyPlaceholder: 'Please input keyword to search'
+    searchKeyPlaceholder: 'Please input keyword to search',
+    customerEmailPlaceholder: 'Please input customer email to search'
   },
   select: {
     customerPlaceholder: 'Select Customer',
@@ -372,8 +374,10 @@ export default {
     customerPwd: 'Customer Password',
     customerNickname: 'Customer Nickname',
     customerPhone: 'Customer Phone',
+    customerEmail: 'Customer Email',
     createTime: 'Create Time',
     country: 'Country',
+    countryCode: 'Country Code',
     channelId: 'Channel',
     channelName: 'Channel Name',
     changeType: 'Bill Type',

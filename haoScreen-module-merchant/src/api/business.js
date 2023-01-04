@@ -80,6 +80,13 @@ export function updateRoutingStatus(quotationId, enable) {
   })
 }
 
+export function refreshTaskStatus(taskId) {
+  return request(taskPre + '/refreshStatus', {
+    method: 'post',
+    params: { taskId }
+  })
+}
+
 /**
  * delete
  */
