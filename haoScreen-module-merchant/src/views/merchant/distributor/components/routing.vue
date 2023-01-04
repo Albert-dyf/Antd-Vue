@@ -49,6 +49,7 @@
                 v-model="scope.row[attr]"
                 :active-value="1"
                 :inactive-value="0"
+                :disabled="scope.row.earningsRate === null"
                 @change="handleStatusChange(scope.row)"
               ></el-switch>
               <span v-else-if="tableItemAttr[attr].type === 'enum'">
@@ -117,7 +118,7 @@
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
-import { getDistributorRoutings, updateDistributorRouting, updateDistributorRoutingAll } from '@/api/merchant'
+import { getDistributorRoutings, updateDistributorRouting, updateDistributorRoutingAll, updateRoutingStatus } from '@/api/merchant'
 import { syncPages, parseEnumValue, parseMoney } from '@/utils'
 
 export default {
@@ -155,9 +156,7 @@ export default {
           i18n: 'offerTime'
         },
         useStatus: {
-          type: 'enum',
-          colorEnum: ['danger', 'success', 'warning', 'danger'],
-          valueEnum: []
+          type: 'switch'
         }
       },
 
@@ -246,7 +245,7 @@ export default {
         earningsRate: this.addOfferForm.earningsRate,
         merchantId: this.distributorId
       }
-      updateDistributorRouting(data).then(res => {
+      await updateDistributorRouting(data).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.addRoutingSuccess'))
           this.addDialogVisible = false
@@ -261,10 +260,20 @@ export default {
         earningsRate: this.addOfferForm.earningsRate,
         merchantId: this.distributorId
       }
-      updateDistributorRoutingAll(data).then(res => {
+      await updateDistributorRoutingAll(data).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.updateRoutingSuccess'))
           this.addDialogVisible = false
+          this._getRoutingList()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    async _updateRoutingStatus() {
+      await updateRoutingStatus(this.current.quotationId, this.current.useStatus).then(res => {
+        if (res.code === 200) {
+          this.$message.success(this.$t('popMessage.statusChangeSuccess'))
           this._getRoutingList()
         } else {
           this.$message.error(res.msg)
@@ -306,7 +315,10 @@ export default {
     hanldeChangeCurrentPage() {
       this._getRoutingList()
     },
-    handleStatusChange() {}
+    handleStatusChange(data) {
+      this.current = data
+      this._updateRoutingStatus()
+    }
   }
 }
 </script>

@@ -87,6 +87,14 @@ export function updateOperatorStatus(operatorId, enable) {
   })
 }
 
+export function updateRoutingStatus(quotationId, enable) {
+  const url = enable ? '/enable' : '/disable'
+  return request(quotationPre + url, {
+    method: 'post',
+    params: { quotationId }
+  })
+}
+
 /**
  * delete
  */
