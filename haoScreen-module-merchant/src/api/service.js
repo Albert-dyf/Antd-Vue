@@ -1,9 +1,11 @@
 import request from '@/utils/request'
 
-const root = '/manager/api/haoScreen/module/manager/api/customer/service'
+const root = '/merchant/api/haoScreen/module/manager/api/customer/service'
 const customerPre = root + '/customer/base/all'
 const taskPre = root + '/screen/task/all'
 const providerPre = root + '/provider/base/all'
+const billPre = customerPre + '/balance/log'
+const routingPre = customerPre + '/quotation'
 
 /**
  * get
@@ -25,6 +27,20 @@ export function getTaskList(params) {
 export function getProviderAll(params) {
   return request(providerPre + '/list', {
     methods: 'get',
+    params
+  })
+}
+
+export function getCustomerBill(params) {
+  return request(billPre + '/list', {
+    method: 'get',
+    params
+  })
+}
+
+export function getCustomerRouting(params) {
+  return request(routingPre + '/list', {
+    method: 'get',
     params
   })
 }
@@ -58,14 +74,14 @@ export function recharge4Provider(data) {
  */
 export function enableCustomer(customerId) {
   return request(customerPre + '/enable', {
-    method: 'post',
+    method: 'put',
     params: { customerId }
   })
 }
 
 export function disableCustomer(customerId) {
   return request(customerPre + '/disable', {
-    method: 'post',
+    method: 'put',
     params: { customerId }
   })
 }
@@ -81,6 +97,28 @@ export function refreshBalance(providerId) {
   return request(providerPre + '/refreshBalance', {
     method: 'post',
     params: { providerId }
+  })
+}
+
+export function updateCustomerRouting(data) {
+  return request(routingPre + '/setSingle', {
+    method: 'post',
+    params: { ...data }
+  })
+}
+
+export function updateCustomerRoutingAll(data) {
+  return request(routingPre + '/setAll', {
+    method: 'post',
+    params: { ...data }
+  })
+}
+
+export function updateRoutingStatus(quotationId, enable) {
+  const url = enable ? '/enable' : '/disable'
+  return request(routingPre + url, {
+    method: 'post',
+    params: { quotationId }
   })
 }
 

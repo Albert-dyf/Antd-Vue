@@ -76,6 +76,7 @@
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import { getProviderBillList } from '@/api/commen-resource'
 import { getCustomerBillList } from '@/api/business'
+import { getCustomerBill } from '@/api/service'
 import { parseEnumValue, parseMoney, syncPages } from '@/utils'
 
 export default {
@@ -149,6 +150,9 @@ export default {
       if (this.customer.customerId) {
         await this._getCustomerBillList()
       }
+      if (this.customer.id) {
+        await this._getCustomerBill()
+      }
       if (this.provider.providerId) {
         await this._getProviderBillList()
       }
@@ -164,6 +168,26 @@ export default {
       delete param.total
       param.customerId = this.customer.customerId
       await getCustomerBillList(param).then(res => {
+        if (res.code === 200) {
+          this.tableData = res.data.rows
+          this.tableItemAttr.changeType.valueEnum = parseEnumValue(res.data.params.EnumBalanceChangeType)
+          this.changeTypes = res.data.params.EnumBalanceChangeType
+          syncPages(this.pages, res)
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+      this.isLoading = false
+    },
+    async _getCustomerBill() {
+      this.isLoading = true
+      const param = {
+        ...this.pages,
+        ...this.searchForm
+      }
+      delete param.total
+      param.customerId = this.customer.id
+      await getCustomerBill(param).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.rows
           this.tableItemAttr.changeType.valueEnum = parseEnumValue(res.data.params.EnumBalanceChangeType)

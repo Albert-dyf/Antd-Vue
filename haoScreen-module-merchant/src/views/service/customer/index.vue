@@ -5,7 +5,7 @@
         <el-form inline size="small">
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
-          <el-form-item>
+          <el-form-item v-if="false">
             <el-select v-model="searchForm.waiterId" :placeholder="$t('select.waiterPlaceholder')" clearable @visible-change="hanleWaiterSelectVisible">
               <el-option v-for="waiter in waiters" :key="waiter.id" :label="waiter.nickName || waiter.email" :value="waiter.id" />
             </el-select>
@@ -49,8 +49,9 @@
               <span v-if="scope.row.useStatus !== 0 && scope.row.useStatus !== 3">
                 <el-button v-if="scope.row.useStatus === 2" type="text" @click="handleClickEnable(scope.row)">{{ $t('common.enable') }}</el-button>
                 <el-button v-else-if="scope.row.useStatus === 1" type="text" @click="handleClickDisable(scope.row)">{{ $t('common.disable') }}</el-button>
-                <el-button v-if="scope.row.useStatus === 1" type="text" @click="handleClickRecharge(scope.row)">{{ $t('service.recharge') }}</el-button>
+                <!-- <el-button v-if="scope.row.useStatus === 1" type="text" @click="handleClickRecharge(scope.row)">{{ $t('service.recharge') }}</el-button> -->
                 <el-button type="text" @click="handleClickBill(scope.row)">{{ $t('common.bill') }}</el-button>
+                <el-button type="text" @click="handleClickRouting(scope.row)">{{ $t('common.offerDetail') }}</el-button>
                 <!-- <el-popconfirm
                   :title="$t('popMessage.resetPwdTip')"
                   :confirm-button-text="$t('common.confirm')"
@@ -111,7 +112,11 @@
     </el-dialog>
 
     <transition name="fade-transform" mode="out-in">
-      <bill-panel v-if="showBillPanel" :customer-id="current.id" @backToTable="handleBack" />
+      <bill-panel v-if="showBillPanel" :customer="current" @backToTable="handleBack" />
+    </transition>
+
+    <transition name="fade-transform" mode="out-in">
+      <routing v-if="routingVisible" :customer="current" @backToTable="handleBack" />
     </transition>
   </el-container>
 </template>
@@ -119,6 +124,7 @@
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import BillPanel from '@/components/BillPanel'
+import Routing from './components/routing.vue'
 import { getCustomerListAll, recharge4Customer, enableCustomer, disableCustomer, resetPwd } from '@/api/service'
 import { getOperatorList } from '@/api/commen-resource'
 import { parseEnumValue, syncPages, parseMoney, reverseMoney } from '@/utils'
@@ -126,7 +132,8 @@ import { parseEnumValue, syncPages, parseMoney, reverseMoney } from '@/utils'
 export default {
   components: {
     StarlinkDatePicker,
-    BillPanel
+    BillPanel,
+    Routing
   },
   data() {
     return {
@@ -187,7 +194,9 @@ export default {
       },
 
       // bill panel
-      showBillPanel: false
+      showBillPanel: false,
+      // routing
+      routingVisible: false
     }
   },
   computed: {},
@@ -201,7 +210,7 @@ export default {
   },
   async created() {
     await this._getCustomerListAll()
-    await this._getOperatorList()
+    // await this._getOperatorList()
   },
   mounted() {},
   methods: {
@@ -325,11 +334,16 @@ export default {
     },
     handleBack() {
       this.showBillPanel = false
+      this.routingVisible = false
     },
     hanleWaiterSelectVisible(val) {
       if (val) {
         this._getOperatorList()
       }
+    },
+    handleClickRouting(data) {
+      this.current = data
+      this.routingVisible = true
     }
   }
 }
