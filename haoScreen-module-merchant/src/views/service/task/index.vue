@@ -5,7 +5,8 @@
         <el-form inline size="small">
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
-          <el-form-item>
+          <el-form-item><el-input v-model="searchForm.customerEmail" :placeholder="$t('search.customerEmailPlaceholder')" clearable /></el-form-item>
+          <el-form-item v-if="false">
             <el-select v-model="searchForm.customerId" :placeholder="$t('select.customerPlaceholder')" clearable>
               <el-option v-for="customer in customerAll" :key="customer.customerId" :label="customer.nickName" :value="customer.id" />
             </el-select>
@@ -37,6 +38,7 @@
             :prop="attr"
             :label="$t('service.' + (tableItemAttr[attr].i18n || attr))"
             show-overflow-tooltip
+            :width="tableItemAttr[attr].width || ''"
           >
             <template slot-scope="scope">
               <span v-if="tableItemAttr[attr].type === 'enum'">
@@ -51,18 +53,21 @@
                   :text-inside="true"
                   :show-text="true"
                   :stroke-width="26"
-                  :percentage="(scope.row.activatedCount / scope.row.finishedCount).toFixed(3) * 100 || 0"
-                  :text="(scope.row.activatedCount + ' / ' + scope.row.finishedCount)"
+                  :percentage="(scope.row.activatedCount / scope.row.totalCount).toFixed(3) * 100 || 0"
+                  :text="(scope.row.activatedCount + ' / ' + scope.row.totalCount)"
                 >
                 </starlink-progress>
               </span>
-              <span v-else-if="attr === 'country'">{{ scope.row.countryNameZh + ' / ' + scope.row.countryNameEn }}</span>
+              <span v-else-if="attr === 'merchant'">
+                <div v-for="(merchant, index) of ['一', '二', '三']" :key="'merchant-' + merchant">{{ merchant + '级：'+ (scope.row['merchantName' + (index+1)] || '-') }}</div>
+              </span>
               <span v-else>{{ scope.row[attr] }}</span>
             </template>
           </el-table-column>
           <el-table-column :label="$t('common.option')">
             <template slot-scope="scope">
-              <el-button type="text" @click="handleClickAllowance(scope.row)">{{ $t('service.allowance') }}</el-button>
+              <el-button v-if="scope.row.taskStatus === 3" type="text" @click="handleClickRefresh(scope.row)">{{ $t('common.refreshTask') }}</el-button>
+              <!-- <el-button type="text" @click="handleClickAllowance(scope.row)">{{ $t('service.allowance') }}</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -118,8 +123,8 @@
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import StarlinkProgress from '@/components/StarlinkProgress'
-import { getTaskList, getCustomerListAll, allowance } from '@/api/service'
-import { syncPages, parseEnumValue, parseMoney, reverseMoney } from '@/utils'
+import { getTaskList, refreshTaskStatus } from '@/api/service'
+import { syncPages, parseEnumValue, parseMoney } from '@/utils'
 
 export default {
   components: {
@@ -131,23 +136,27 @@ export default {
       // setup
       tableItemAttr: {
         taskName: {},
-        country: {},
+        countryCode: {
+          width: '80px'
+        },
         screenType: {
           type: 'enum',
           valueEnum: []
         },
-        customerName: {},
+        customerEmail: {},
         activatedCount: {
           i18n: 'activatedCountTotal'
         },
         // totalCount: {},
-        orderCostAmount: {
+        merchant: {},
+        orderSaleAmount: {
           type: 'money'
         },
         orderSalePrice: {
           type: 'money'
         },
         taskStatus: {
+          width: '80px',
           type: 'enum',
           valueEnum: [],
           colorEnum: ['danger', 'info', '', '', 'success', 'danger']
@@ -166,7 +175,7 @@ export default {
         endTime: '',
         searchKey: '',
         taskStatus: '',
-        customerId: ''
+        customerEmail: ''
       },
       isLoading: false,
       tableData: [],
@@ -202,7 +211,6 @@ export default {
     }
   },
   async created() {
-    await this._getCustomerListAll()
     await this._getTaskList()
   },
   mounted() {},
@@ -211,19 +219,6 @@ export default {
     parseMoney,
 
     // request
-    async _getCustomerListAll() {
-      const param = {
-        pageNumber: 1,
-        pageSize: 100
-      }
-      await getCustomerListAll(param).then(res => {
-        if (res.code === 200) {
-          this.customerAll = res.data.rows
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
-    },
     async _getTaskList() {
       this.isLoading = true
       const param = {
@@ -245,17 +240,12 @@ export default {
       })
       this.isLoading = false
     },
-    async _allowance() {
-      const data = {
-        taskId: this.current.id,
-        amount: reverseMoney(this.allowanceForm.amount),
-        feeDigest: this.allowanceForm.feeDigest
-      }
-      await allowance(data).then(res => {
+    _refreshTaskStatus() {
+      refreshTaskStatus(this.current.taskId).then(res => {
         if (res.code === 200) {
-          this.$message.success(this.$t('popMessage.allowanceSuccess'))
-          this.allowanceDialogVisible = false
           this._getTaskList()
+        } else {
+          this.$message.error(res.msg)
         }
       })
     },
@@ -281,6 +271,10 @@ export default {
     },
     hanldeChangeCurrentPage() {
       this._getTaskList()
+    },
+    handleClickRefresh(data) {
+      this.current = data
+      this._refreshTaskStatus()
     }
   }
 }

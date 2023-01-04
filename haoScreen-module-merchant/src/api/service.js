@@ -100,25 +100,10 @@ export function refreshBalance(providerId) {
   })
 }
 
-export function updateCustomerRouting(data) {
-  return request(routingPre + '/setSingle', {
+export function refreshTaskStatus(taskId) {
+  return request(taskPre + '/refreshStatus', {
     method: 'post',
-    params: { ...data }
-  })
-}
-
-export function updateCustomerRoutingAll(data) {
-  return request(routingPre + '/setAll', {
-    method: 'post',
-    params: { ...data }
-  })
-}
-
-export function updateRoutingStatus(quotationId, enable) {
-  const url = enable ? '/enable' : '/disable'
-  return request(routingPre + url, {
-    method: 'post',
-    params: { quotationId }
+    params: { taskId }
   })
 }
 

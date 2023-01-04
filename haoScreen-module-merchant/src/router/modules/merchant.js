@@ -6,7 +6,7 @@ const merchantManage = {
   redirect: 'noRedirect',
   meta: {
     title: 'merchantManage',
-    icon: 'el-icon-suitcase-1'
+    icon: 'el-icon-s-shop'
   },
   children: [
     {

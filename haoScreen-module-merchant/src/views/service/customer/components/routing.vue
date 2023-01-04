@@ -118,7 +118,7 @@
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
-import { getCustomerRouting, updateCustomerRouting, updateCustomerRoutingAll, updateRoutingStatus } from '@/api/service'
+import { getCustomerRouting } from '@/api/service'
 import { syncPages, parseEnumValue, parseMoney } from '@/utils'
 
 export default {
@@ -241,47 +241,6 @@ export default {
         }
       })
       this.isLoading = false
-    },
-    async _updateCustomerRouting() {
-      const data = {
-        channelId: this.current.channelId,
-        earningsRate: this.addOfferForm.earningsRate,
-        customerId: this.customer.id
-      }
-      await updateCustomerRouting(data).then(res => {
-        if (res.code === 200) {
-          this.$message.success(this.$t('popMessage.addRoutingSuccess'))
-          this.addDialogVisible = false
-          this._getRoutingList()
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
-    },
-    async _updateAllRouting() {
-      const data = {
-        earningsRate: this.addOfferForm.earningsRate,
-        customerId: this.customer.id
-      }
-      await updateCustomerRoutingAll(data).then(res => {
-        if (res.code === 200) {
-          this.$message.success(this.$t('popMessage.updateRoutingSuccess'))
-          this.addDialogVisible = false
-          this._getRoutingList()
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
-    },
-    async _updateRoutingStatus() {
-      await updateRoutingStatus(this.current.quotationId, this.current.useStatus).then(res => {
-        if (res.code === 200) {
-          this.$message.success(this.$t('popMessage.statusChangeSuccess'))
-          this._getRoutingList()
-        } else {
-          this.$message.error(res.msg)
-        }
-      })
     },
 
     // handler
