@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
 const root = '/merchant/api/haoScreen/module/merchant/api/business/manage'
-const customerPre = root + '/customer/mine/base'
-const taskPre = root + '/customer/mine/task'
-const billPre = root + '/customer/mine/balance/log'
-const routingPre = root + '/customer/mine/quotation'
+const customerPre = root + '/customer/base/mine'
+const taskPre = root + '/screen/task/mine'
+const billPre = root + '/customer/balance/log/mine'
+const routingPre = root + '/quotation/customer/mine'
 
 /**
  * get

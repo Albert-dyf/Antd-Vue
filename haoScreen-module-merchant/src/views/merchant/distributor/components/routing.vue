@@ -40,7 +40,7 @@
           <el-table-column
             v-for="attr in Object.keys(tableItemAttr)"
             :key="'offerTableAttr' + attr"
-            :label="$t('business.' + (tableItemAttr[attr].i18n || attr))"
+            :label="$t('merchant.' + (tableItemAttr[attr].i18n || attr))"
             :prop="attr"
           >
             <template slot-scope="scope">
@@ -62,7 +62,7 @@
                 {{ parseMoney(scope.row[attr]) || $t('business.noOffer') }}
               </span>
               <span v-else-if="attr === 'earningsRate'">
-                {{ scope.row.limitedPrice ? Math.round((scope.row.limitedPrice - scope.row.priceCost) / scope.row.priceCost * 100) : '-' }}
+                {{ scope.row.salePrice ? Math.round((scope.row.salePrice - scope.row.limitedPrice) / scope.row.limitedPrice * 100) : '-' }}
               </span>
               <span v-else>{{ scope.row[attr] || '-' }}</span>
             </template>
@@ -147,10 +147,10 @@ export default {
           type: 'enum',
           valueEnum: []
         },
-        priceCost: {
+        limitedPrice: {
           type: 'money'
         },
-        limitedPrice: {
+        salePrice: {
           type: 'money'
         },
         earningsRate: {},
@@ -158,7 +158,8 @@ export default {
           i18n: 'offerTime'
         },
         useStatus: {
-          type: 'switch'
+          type: 'switch',
+          i18n: 'stateSwitch'
         }
       },
 
