@@ -4,7 +4,7 @@ export default {
     achievementReport: '业绩日报',
     businessManage: '商务管理',
     channelManage: '通道管理',
-    channelRouting: '通道路由',
+    channelRouting: '通道报价',
     customerManage: '客户管理',
     customerLog: '客户日志',
     Dashboard: '首页',

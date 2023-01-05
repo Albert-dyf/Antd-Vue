@@ -5,6 +5,7 @@ const superManage = {
   component: Layout,
   name: 'superManage',
   redirect: 'noRedirect',
+  alwaysShow: true,
   meta: {
     title: 'superManage',
     icon: 'lock'

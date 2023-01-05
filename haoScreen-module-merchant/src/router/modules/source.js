@@ -4,6 +4,7 @@ const sourceManage = {
   path: '/source',
   component: Layout,
   redirect: 'noRedirect',
+  alwaysShow: true,
   meta: {
     title: 'sourceManage',
     icon: 'el-icon-files'
