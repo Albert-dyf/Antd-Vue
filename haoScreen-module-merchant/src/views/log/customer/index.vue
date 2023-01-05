@@ -1,6 +1,6 @@
 <template>
-  <el-container class="merchant-operator-wrapper common-container">
-    <el-main class="merchant-operator-content common-body">
+  <el-container class="log-customer-wrapper common-container">
+    <el-main class="log-customer-content common-body">
       <el-row>
         <el-form inline size="small">
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
@@ -20,7 +20,7 @@
         >
           <el-table-column
             v-for="attr in Object.keys(tableItemAttr)"
-            :key="'manageLog' + attr"
+            :key="'customerLog' + attr"
             :prop="attr"
             :label="$t('log.' + (tableItemAttr[attr].i18n || attr ))"
             :width="tableItemAttr[attr].width || ''"
@@ -53,7 +53,7 @@
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
-import { getManageLog } from '@/api/log'
+import { getCustomerLog } from '@/api/log'
 import { parseTime, syncPages } from '@/utils'
 
 export default {
@@ -106,7 +106,7 @@ export default {
   computed: {},
   watch: {},
   async created() {
-    await this._getManageLog()
+    await this._getCustomerLog()
   },
   mounted() {},
   methods: {
@@ -114,11 +114,11 @@ export default {
     parseTime,
 
     // request
-    async _getManageLog() {
+    async _getCustomerLog() {
       this.isLoading = true
       const param = { ...this.pages, ...this.searchForm }
       delete param.total
-      await getManageLog(param).then(res => {
+      await getCustomerLog(param).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.rows
           syncPages(this.pages, res)
@@ -129,13 +129,13 @@ export default {
 
     // handler
     handleClickSearch() {
-      this._getManageLog()
+      this._getCustomerLog()
     },
     handleChangePageSize() {
-      this._getManageLog()
+      this._getCustomerLog()
     },
     hanldeChangeCurrentPage() {
-      this._getManageLog()
+      this._getCustomerLog()
     }
   }
 }

@@ -10,10 +10,18 @@ const LogManage = {
   },
   children: [
     {
-      path: '/log/manage',
-      component: () => import('@/views/log/manage'),
+      path: '/log/merchant',
+      component: () => import('@/views/log/merchant'),
       meta: {
-        title: 'manageLog',
+        title: 'merchantLog',
+        breadcrumb: true
+      }
+    },
+    {
+      path: '/log/customer',
+      component: () => import('@/views/log/customer'),
+      meta: {
+        title: 'customerLog',
         breadcrumb: true
       }
     }
