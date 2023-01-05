@@ -91,7 +91,8 @@ export default {
     setAccount: 'Account',
     deleteAccount: 'Delete Account',
     resetPwd: 'Reset Password',
-    refreshTask: 'Refresh Task'
+    refreshTask: 'Refresh Task',
+    summary: 'Summary'
   },
   popMessage: {
     addUserSuccess: 'Add User Success !',
@@ -367,6 +368,7 @@ export default {
     stateSwitch: 'Enable/Disable',
     screenType: 'Screen Type',
     salePrice: 'Sale Price',
+    taskName: 'Task Name',
     totalCount: 'Total Count'
   },
   business: {

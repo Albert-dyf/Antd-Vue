@@ -95,7 +95,8 @@ export default {
     setAccount: '设置账号',
     deleteAccount: '删除账号',
     resetPwd: '重置密码',
-    refreshTask: '刷新任务'
+    refreshTask: '刷新任务',
+    summary: '总计'
   },
   // 弹出信息
   popMessage: {
@@ -366,20 +367,21 @@ export default {
     interfaceType: '通道类型',
     level: '商户等级',
     lastLoginTime: '上次登录时间',
-    limitedAmount: '平台销售额',
+    limitedAmount: '订单成本总额',
     limitedPrice: '成本价格',
     merchantName: '分销商名称',
     merchantDescribe: '商户备注',
     nickName: '账户昵称',
     operatorCountLimit: '人数限制',
     orderTime: '订单时间',
-    orderSaleAmount: '商户销售额',
+    orderSaleAmount: '订单销售总额',
     orderCommissionAmount: '订单佣金',
     offerTime: '报价时间',
     password: '密码',
     stateSwitch: '启用/禁用',
     screenType: '筛查类型',
     salePrice: '销售价格',
+    taskName: '任务名称',
     totalCount: '任务总数'
   },
   // 商务管理

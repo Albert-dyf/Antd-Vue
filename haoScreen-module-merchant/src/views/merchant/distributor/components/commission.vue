@@ -17,12 +17,16 @@
           :data="tableData"
           stripe
           size="small"
+          :summary-method="getSummaries"
+          show-summary
         >
           <el-table-column
             v-for="attr in Object.keys(tableItemAttr)"
             :key="'commission' + attr"
             :label="$t('merchant.' + (tableItemAttr[attr].i18n || attr))"
             :prop="attr"
+            :width="tableItemAttr[attr].width || ''"
+            show-overflow-tooltip
           >
             <template slot-scope="scope">
               <span v-if="tableItemAttr[attr].type === 'enum'">
@@ -77,9 +81,21 @@ export default {
       // setup
       tableItemAttr: {
         createTime: {
-          i18n: 'orderTime'
+          i18n: 'orderTime',
+          width: '180px'
         },
-        totalCount: {},
+        taskName: {},
+        customerEmail: {
+          width: '180px'
+        },
+        totalCount: {
+          width: '120px'
+        },
+        screenType: {
+          type: 'enum',
+          width: '180px',
+          valueEnum: []
+        },
         limitedAmount: {
           type: 'money'
         },
@@ -88,15 +104,11 @@ export default {
         },
         orderCommissionAmount: {
           type: 'money'
-        },
-        interfaceType: {
-          type: 'enum',
-          valueEnum: []
-        },
-        screenType: {
-          type: 'enum',
-          valueEnum: []
         }
+        // interfaceType: {
+        //   type: 'enum',
+        //   valueEnum: []
+        // },
       },
 
       // page data
@@ -118,13 +130,43 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {
-    this._getCommissionList()
+  async created() {
+    await this._getCommissionList()
   },
   mounted() {},
   methods: {
     // util
     parseMoney,
+    getSummaries(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = this.$t('common.summary')
+          return
+        }
+        const values = data.map(item => Number(item[column.property]))
+        if (!values.every(value => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr)
+            if (!isNaN(value)) {
+              return prev + curr
+            } else {
+              return prev
+            }
+          }, 0)
+
+          if (column.property === 'totalCount' || column.property === 'screenType') {
+            sums[index] = ''
+          } else {
+            sums[index] = parseMoney(sums[index])
+          }
+        } else {
+          sums[index] = ''
+        }
+      })
+      return sums
+    },
 
     // request
     async _getCommissionList() {
@@ -139,7 +181,7 @@ export default {
         if (res.code === 200) {
           this.tableData = res.data.rows
           this.tableItemAttr.screenType.valueEnum = parseEnumValue(res.data.params.EnumScreenType)
-          this.tableItemAttr.interfaceType.valueEnum = parseEnumValue(res.data.params.EnumScreenChannelType)
+          // this.tableItemAttr.interfaceType.valueEnum = parseEnumValue(res.data.params.EnumScreenChannelType)
           syncPages(this.pages, res)
         } else {
           this.$message.error(res.msg)
