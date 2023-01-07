@@ -55,6 +55,12 @@ export function getTotalOrderAmount() {
   })
 }
 
+export function getMerchantOrderAmount() {
+  return request(dashboardPre + '/childOrderAmountTotal', {
+    method: 'get'
+  })
+}
+
 export function getSelfOrderCount() {
   return request(dashboardPre + '/orderCountMine', {
     method: 'get'
@@ -67,6 +73,12 @@ export function getTotalOrderCount() {
   })
 }
 
+export function getMerchantOrderCount() {
+  return request(dashboardPre + '/childOrderCountTotal', {
+    method: 'get'
+  })
+}
+
 export function getOrderListAll() {
   return request(dashboardPre + '/orderListAll', {
     method: 'get'
@@ -74,7 +86,7 @@ export function getOrderListAll() {
 }
 
 export function getOrderListMine() {
-  return request(dashboardPre + '/orderListMine', {
+  return request(dashboardPre + '/orderListAllMine', {
     method: 'get'
   })
 }

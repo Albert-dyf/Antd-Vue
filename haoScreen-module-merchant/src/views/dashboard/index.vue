@@ -2,7 +2,7 @@
   <el-row class="dashboard-container" :gutter="32">
     <el-col :span="19">
       <data-analysis />
-      <!-- <charts /> -->
+      <charts />
     </el-col>
     <el-col :span="5">
       <base-user-card />
@@ -13,14 +13,14 @@
 <script>
 import BaseUserCard from './components/BaseUserCard'
 import DataAnalysis from './components/DataAnalysis'
-// import Charts from './components/Charts'
+import Charts from './components/Charts'
 
 export default {
   name: 'Dashboard',
   components: {
     BaseUserCard,
-    DataAnalysis
-    // Charts
+    DataAnalysis,
+    Charts
   },
   data() {
     return {
