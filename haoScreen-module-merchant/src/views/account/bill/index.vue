@@ -47,7 +47,7 @@
               </div>
             </div>
             <div v-else-if="key === 'changeAfterValue'">
-              {{ parseMoney(scope.row[key]) }}
+              {{ $t('common.dollarChar') + ' ' + parseMoney(scope.row[key]) }}
             </div>
             <div v-else>{{ scope.row[key] }}</div>
           </template>

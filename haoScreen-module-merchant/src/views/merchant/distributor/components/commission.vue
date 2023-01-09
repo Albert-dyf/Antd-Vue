@@ -36,7 +36,7 @@
                 <span v-else>{{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}</span>
               </span>
               <span v-else-if="tableItemAttr[attr].type === 'money'">
-                {{ parseMoney(scope.row[attr]) || '-' }}
+                {{ scope.row[attr] ? $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) : '-' }}
               </span>
               <span v-else>{{ scope.row[attr] || '-' }}</span>
             </template>
@@ -159,7 +159,7 @@ export default {
           if (column.property === 'totalCount' || column.property === 'screenType') {
             sums[index] = ''
           } else {
-            sums[index] = parseMoney(sums[index])
+            sums[index] = this.$t('common.dollarChar') + ' ' + parseMoney(sums[index])
           }
         } else {
           sums[index] = ''

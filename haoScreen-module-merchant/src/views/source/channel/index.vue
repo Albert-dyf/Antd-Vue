@@ -47,7 +47,7 @@
               <span v-else-if="tableItemAttr[attr].type === 'enum'">
                 {{ tableItemAttr[attr].valueEnum[scope.row[attr]].name }}
               </span><span v-else-if="tableItemAttr[attr].type === 'money'">
-                {{ parseMoney(scope.row[attr]) }}
+                {{ $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) }}
               </span>
               <span v-else>{{ scope.row[attr] }}</span>
             </template>

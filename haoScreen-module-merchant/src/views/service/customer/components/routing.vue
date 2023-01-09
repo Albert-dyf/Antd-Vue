@@ -59,7 +59,7 @@
                 <span v-else>{{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}</span>
               </span>
               <span v-else-if="tableItemAttr[attr].type === 'money'">
-                {{ parseMoney(scope.row[attr]) || $t('business.noOffer') }}
+                {{ scope.row[attr] ? $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) : $t('business.noOffer') }}
               </span>
               <span v-else-if="attr === 'earningsRate'">
                 {{ scope.row.salePrice ? Math.round((scope.row.salePrice - scope.row.limitedPrice) / scope.row.limitedPrice * 100) : '-' }}

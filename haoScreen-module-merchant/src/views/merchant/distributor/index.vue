@@ -41,7 +41,7 @@
                 :inactive-value="0"
                 @change="handleStatusChange(scope.row)"
               ></el-switch>
-              <span v-else-if="tableItemAttr[attr].type === 'money'">{{ parseMoney(scope.row[attr]) }}</span>
+              <span v-else-if="tableItemAttr[attr].type === 'money'">{{ $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) }}</span>
               <span v-else>{{ scope.row[attr] || '-' }}</span>
             </template>
           </el-table-column>

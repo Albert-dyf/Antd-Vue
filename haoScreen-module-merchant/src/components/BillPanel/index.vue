@@ -31,7 +31,7 @@
           >
             <template slot-scope="scope">
               <span v-if="tableItemAttr[attr].type === 'money'">
-                {{ parseMoney(scope.row[attr]) }}
+                {{ $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) }}
               </span>
               <span v-else-if="tableItemAttr[attr].type === 'enum'">
                 <el-tag v-if="tableItemAttr[attr].colorEnum" :type="tableItemAttr[attr].colorEnum[scope.row[attr]]">

@@ -29,7 +29,7 @@
             :label="$t('source.' + attr)"
           >
             <template slot-scope="scope">
-              <span v-if="tableItemAttr[attr].type === 'money'">{{ parseMoney(scope.row[attr]) }}</span>
+              <span v-if="tableItemAttr[attr].type === 'money'">{{ $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) }}</span>
               <span v-else>{{ scope.row[attr] || '-' }}</span>
             </template>
           </el-table-column>
