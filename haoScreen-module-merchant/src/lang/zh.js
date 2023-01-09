@@ -279,6 +279,8 @@ export default {
     mobile: '电话',
     mineCount: '个人订单量',
     mineAmount: '个人销售额',
+    merchantCount: '分销商总订单量',
+    merchantAmount: '分销商总销售额',
     name: '用户名',
     nickName: '昵称',
     orderAmount: '销售额',

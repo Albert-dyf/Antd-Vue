@@ -17,7 +17,7 @@
         <section class="analysis-item">
           <div class="title">{{ $t('dashboard.amountDataMerchant') }}</div>
           <div class="value">
-            <count-to :start-val="0" :end-val="parseMoney(amountDataMerchant.childOrderAmountTotal) || 0" :decimals="5" :duration="3000" />
+            <count-to :start-val="0" :end-val="parseMoney(amountDataTotal.orderAmountTotal) || 0" :decimals="5" :duration="3000" />
           </div>
         </section>
       </el-card>
@@ -28,7 +28,7 @@
         <section class="analysis-item">
           <div class="title">{{ $t('dashboard.orderDataSelf') }}</div>
           <div class="value">
-            <count-to :start-val="0" :end-val="orderDataSelf.orderCountMine || 0" :duration="3000" />
+            <count-to :start-val="0" :end-val="Number(orderDataSelf.orderCountMine) || 0" :duration="3000" />
           </div>
         </section>
       </el-card>
@@ -39,7 +39,7 @@
         <section class="analysis-item">
           <div class="title">{{ $t('dashboard.orderDataMerchant') }}</div>
           <div class="value">
-            <count-to :start-val="0" :end-val="orderDataMerchant.childOrderCountTotal || 0" :duration="3000" />
+            <count-to :start-val="0" :end-val="Number(orderDataTotal.orderCount) || 0" :duration="3000" />
           </div>
         </section>
       </el-card>
@@ -129,11 +129,11 @@ export default {
 
     init() {
       this._getSelfOrderAmount()
-      // this._getTotalOrderAmount()
-      this._getMerchantOrderAmount()
+      this._getTotalOrderAmount()
+      // this._getMerchantOrderAmount()
       this._getSelfOrderCount()
-      // this._getTotalOrderCount()
-      this._getMerchantOrderCount()
+      this._getTotalOrderCount()
+      // this._getMerchantOrderCount()
     },
 
     _getSelfOrderAmount() {
@@ -141,14 +141,14 @@ export default {
         this.amountDataSelf = res.data
       })
     },
-    _getTotalOrderAmount() {
-      getTotalOrderAmount().then(res => {
-        this.amountDataTotal = res.data
-      })
-    },
     _getSelfOrderCount() {
       getSelfOrderCount().then(res => {
         this.orderDataSelf = res.data
+      })
+    },
+    _getTotalOrderAmount() {
+      getTotalOrderAmount().then(res => {
+        this.amountDataTotal = res.data
       })
     },
     _getTotalOrderCount() {

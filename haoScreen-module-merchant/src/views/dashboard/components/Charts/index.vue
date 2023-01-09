@@ -119,7 +119,7 @@ export default {
     async _getOrderData() {
       await getOrderListAll().then(res => {
         if (res.code === 200) {
-          this.series = [...this.series, ...this.formatChartData(res.data, 'total')]
+          this.series = [...this.series, ...this.formatChartData(res.data, 'merchant')]
         }
       })
     },

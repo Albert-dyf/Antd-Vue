@@ -27,7 +27,7 @@ const sourceManage = {
       }
     },
     {
-      path: '/source/routing',
+      path: '/source/quotation',
       component: () => import('@/views/source/routing'),
       meta: {
         title: 'channelRouting',
