@@ -100,6 +100,20 @@ export function updateRoutingStatus(routingId, enable) {
   })
 }
 
+export function setAllRoutings(data) {
+  return request(routingPre + '/limitPriceAll', {
+    method: 'post',
+    params: { ...data }
+  })
+}
+
+export function setSingleRouting(data) {
+  return request(routingPre + '/limitPriceSingle', {
+    method: 'post',
+    params: { ...data }
+  })
+}
+
 /**
  * delete
  */

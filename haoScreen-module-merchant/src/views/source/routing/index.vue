@@ -21,6 +21,10 @@
         </el-form>
       </el-row>
 
+      <el-row class="table-tool-bar">
+        <el-button type="primary" size="small" @click="handleClickSetAll">{{ $t('common.limitPriceAll') }}</el-button>
+      </el-row>
+
       <el-row>
         <el-table
           v-loading="isLoading"
@@ -31,7 +35,7 @@
           <el-table-column
             v-for="attr in Object.keys(tableItemAttr)"
             :key="'routingTableAttr' + attr"
-            :label="$t('source.' + attr)"
+            :label="$t('source.' + (tableItemAttr[attr].i18n || attr))"
             :prop="attr"
           >
             <template slot-scope="scope">
@@ -43,11 +47,19 @@
                 @change="handleStatusChange(scope.row)"
               ></el-switch>
               <span v-else-if="tableItemAttr[attr].type === 'enum'">
-                {{ tableItemAttr[attr].valueEnum[scope.row[attr]].name }}
+                <el-tag v-if="tableItemAttr[attr].colorEnum" :type="tableItemAttr[attr].colorEnum[scope.row[attr]]">
+                  {{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}
+                </el-tag>
+                <span v-else>{{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}</span>
               </span><span v-else-if="tableItemAttr[attr].type === 'money'">
-                {{ scope.row[attr] ? $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) : $t('common.noOffer') }}
+                {{ scope.row[attr] ? $t('common.dollarChar') + ' ' + parseMoney(Math.round(scope.row[attr])) : $t('common.noLimitedPrice') }}
               </span>
               <span v-else>{{ scope.row[attr] }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('common.option')">
+            <template slot-scope="scope">
+              <el-button type="text" size="small" @click="handleClickSetSingle(scope.row)">{{ $t('common.limitPrice') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -64,12 +76,39 @@
         ></el-pagination>
       </el-row>
     </el-main>
+
+    <!-- add -->
+    <el-dialog
+      :visible.sync="addDialogVisible"
+      :title="addForm.channelName ? $t('common.limitPrice') : $t('common.limitPriceAll')"
+      width="30vw"
+      custom-class="add-offer-dialog"
+      :append-to-body="true"
+      :modal-append-to-body="true"
+    >
+      <el-form
+        ref="addFormRef"
+        :model="addForm"
+        :rules="addFormRules"
+        label-width="120px"
+        label-position="right"
+      >
+        <el-form-item v-if="addForm.channelName" :label="$t('business.channelId')"><el-input v-model="addForm.channelName" disabled /></el-form-item>
+        <el-form-item :label="$t('source.earningsRate')" prop="earningsRate">
+          <el-slider v-model="addForm.earningsRate" show-input @change="handleSliderChange" />
+        </el-form-item>
+      </el-form>
+      <el-footer slot="footer">
+        <el-button @click="addDialogVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handleClickSubmit">{{ $t('common.submit') }}</el-button>
+      </el-footer>
+    </el-dialog>
   </el-container>
 </template>
 
 <script>
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
-import { getRoutingList, updateRoutingStatus } from '@/api/source'
+import { getRoutingList, updateRoutingStatus, setAllRoutings, setSingleRouting } from '@/api/source'
 import { syncPages, parseEnumValue, parseMoney } from '@/utils'
 
 export default {
@@ -89,11 +128,18 @@ export default {
           type: 'enum',
           valueEnum: []
         },
-        limitedPrice: {
+        priceCost: {
           type: 'money'
         },
+        priceLimit: {
+          i18n: 'priceBase',
+          type: 'money'
+        },
+        rateLimit: {},
         useStatus: {
-          type: 'switch'
+          type: 'enum',
+          colorEnum: ['danger', 'success', 'warning', 'danger'],
+          valueEnum: []
         },
         handleMinSize: {},
         handleMaxSize: {},
@@ -115,7 +161,18 @@ export default {
       tableData: [],
       current: {},
       screenTypes: [],
-      interfaceTypes: []
+      interfaceTypes: [],
+
+      // add dialog
+      addDialogVisible: false,
+      addForm: {
+        earningsRate: 0
+      },
+      addFormRules: {
+        earningsRate: [
+          { required: true, message: this.$t('source.earningsRate') + this.$t('validator.isRequired'), trigger: ['blur', 'change'] }
+        ]
+      }
     }
   },
   computed: {},
@@ -143,6 +200,7 @@ export default {
           this.screenTypes = res.data.params.EnumScreenType
           this.tableItemAttr.interfaceType.valueEnum = parseEnumValue(res.data.params.EnumScreenChannelType)
           this.interfaceTypes = res.data.params.EnumScreenChannelType
+          this.tableItemAttr.useStatus.valueEnum = parseEnumValue(res.data.params.EnumUseStatus)
           syncPages(this.pages, res)
         } else {
           this.$message.error(res.msg)
@@ -157,6 +215,35 @@ export default {
         } else {
           this.$message.error(res.msg)
           this.current.useStatus = this.current.useStatus === 1 ? 2 : 1
+        }
+      })
+    },
+    _setAllRoutings() {
+      const data = {
+        earningsRate: this.addForm.earningsRate
+      }
+      setAllRoutings(data).then(res => {
+        if (res.code === 200) {
+          this.$message.success(this.$t('popMessage.addLimitPriceSuccess'))
+          this.addDialogVisible = false
+          this._getRoutingList()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    _setSingleRouting() {
+      const data = {
+        quotationId: this.current.quotationId,
+        earningsRate: this.addForm.earningsRate
+      }
+      setSingleRouting(data).then(res => {
+        if (res.code === 200) {
+          this.$message.success(this.$t('popMessage.addLimitPriceSuccess'))
+          this.addDialogVisible = false
+          this._getRoutingList()
+        } else {
+          this.$message.error(res.msg)
         }
       })
     },
@@ -179,10 +266,43 @@ export default {
       if (val) {
         this._getOperatorList()
       }
+    },
+    handleClickSetAll() {
+      this.current = {}
+      this.addForm = {}
+      this.addDialogVisible = true
+    },
+    handleClickSetSingle(data) {
+      this.current = data
+      this.addForm.channelName = this.current.channelName
+      this.addDialogVisible = true
+    },
+    handleClickSubmit() {
+      this.$refs.addFormRef.validate(valid => {
+        if (valid) {
+          if (this.addForm.channelName) {
+            this._setSingleRouting()
+          } else {
+            this._setAllRoutings()
+          }
+        }
+      })
+    },
+    handleSliderChange(val) {
+      this.addForm.earningsRate = Math.round(val)
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
+.add-offer-dialog {
+  .el-form {
+    width: 25vw;
+
+    .el-select {
+      width: 100%;
+    }
+  }
+}
 </style>
