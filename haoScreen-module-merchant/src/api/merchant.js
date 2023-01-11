@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
 const root = '/merchant/api/haoScreen/module/merchant/api/merchant/manage'
-const basePre = root + '/distributor/base'
+const basePre = root + '/merchant/distributor'
 const quotationPre = root + '/merchant/quotation'
 const operatorPre = root + '/merchant/operator'
-const commissionPre = root + '/distributor/commission'
+const commissionPre = basePre + '/commission'
 
 /**
  * get
