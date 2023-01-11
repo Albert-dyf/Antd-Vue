@@ -59,11 +59,11 @@
                 <span v-else>{{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}</span>
               </span>
               <span v-else-if="tableItemAttr[attr].type === 'money'">
-                {{ scope.row[attr] ? $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) : $t('business.noOffer') }}
+                {{ scope.row[attr] ? $t('common.dollarChar') + ' ' + parseMoney(Math.round(scope.row[attr])) : $t('business.noOffer') }}
               </span>
-              <span v-else-if="attr === 'earningsRate'">
+              <!-- <span v-else-if="attr === 'earningsRate'">
                 {{ scope.row.salePrice ? Math.round((scope.row.salePrice - scope.row.limitedPrice) / scope.row.limitedPrice * 100) : '-' }}
-              </span>
+              </span> -->
               <span v-else>{{ scope.row[attr] || '-' }}</span>
             </template>
           </el-table-column>
@@ -105,7 +105,7 @@
       >
         <el-form-item v-if="addOfferForm.channelName" :label="$t('business.channelId')"><el-input v-model="addOfferForm.channelName" disabled /></el-form-item>
         <el-form-item :label="$t('merchant.earningsRate')" prop="earningsRate">
-          <el-slider v-model="addOfferForm.earningsRate" show-input />
+          <el-slider v-model="addOfferForm.earningsRate" show-input @change="handleSliderChange" />
         </el-form-item>
       </el-form>
       <el-footer slot="footer">
@@ -147,13 +147,16 @@ export default {
           type: 'enum',
           valueEnum: []
         },
-        limitedPrice: {
+        priceCost: {
           type: 'money'
         },
-        salePrice: {
+        priceSale: {
           type: 'money'
         },
-        earningsRate: {},
+        merchantRateSale: {},
+        rateSale: {
+          i18n: 'earningsRate'
+        },
         lastUpdateTime: {
           i18n: 'offerTime'
         },
@@ -280,6 +283,9 @@ export default {
     handleStatusChange(data) {
       this.current = data
       this._updateRoutingStatus()
+    },
+    handleSliderChange(val) {
+      this.addOfferForm.earningsRate = Math.round(val)
     }
   }
 }

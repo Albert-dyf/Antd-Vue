@@ -7,3 +7,8 @@ export function isPwd(pwd) {
   const pwdRegex = /^[a-zA-Z0-9~!@#$%^,._-]{6,18}$/
   return pwdRegex.test(pwd)
 }
+
+export function isNumber(num) {
+  const numRegex = /[0-9]\d*/
+  return numRegex.test(num)
+}
