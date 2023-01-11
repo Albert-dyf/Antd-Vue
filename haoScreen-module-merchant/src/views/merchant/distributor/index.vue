@@ -47,16 +47,16 @@
           </el-table-column>
           <el-table-column :label="$t('common.option')">
             <template slot-scope="scope">
-              <el-button type="text" @click="handleClickRoute(scope.row)">{{ $t('common.offerDetail') }}</el-button>
+              <el-button type="text" @click="handleClickRoute(scope.row)">{{ $t('common.offer') }}</el-button>
               <el-button type="text" @click="handleClickCommission(scope.row)">{{ $t('common.commission') }}</el-button>
-              <el-popconfirm
+              <!-- <el-popconfirm
                 :title="$t('popMessage.deleteTip')"
                 :confirm-button-text="$t('common.confirm')"
                 :cancel-button-text="$t('common.cancel')"
                 @onConfirm="handleConfirmDelete"
               >
                 <el-button slot="reference" class="delete-btn" type="text" @click="handleClickDelete(scope.row)">{{ $t('common.delete') }}</el-button>
-              </el-popconfirm>
+              </el-popconfirm> -->
             </template>
           </el-table-column>
         </el-table>
