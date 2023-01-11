@@ -97,7 +97,10 @@ export default {
     deleteAccount: '删除账号',
     resetPwd: '重置密码',
     refreshTask: '刷新任务',
-    summary: '总计'
+    summary: '总计',
+    limitPrice: '限价',
+    limitPriceAll: '一键限价',
+    noLimitedPrice: '暂未限价'
   },
   // 弹出信息
   popMessage: {
@@ -110,6 +113,7 @@ export default {
     addRoutingSuccess: '新增报价成功',
     addDistributorSuccess: '新增分销商成功',
     addOperatorSuccess: '新增超管账户成功',
+    addLimitPriceSuccess: '限价成功',
     authorizedSuccess: '授权成功',
     allowanceSuccess: '补款成功',
     confirmLogout: '登出确认',
@@ -343,6 +347,7 @@ export default {
     createTime: '创建时间',
     channelName: '通道名称',
     channelStatus: '启用/禁用',
+    earningsRate: '计划盈利率(%)',
     editProvider: '编辑供应商',
     editChannel: '编辑通道',
     handleMinSize: '最小提交量',
@@ -358,6 +363,7 @@ export default {
     priceCost: '成本价格',
     priceBase: '销售限价',
     priceSale: '销售价格',
+    rateLimit: '保护盈利率(%)',
     screenTypeName: '筛查类型',
     screenTypeId: '筛选类型',
     screenType: '筛选类型',
@@ -381,6 +387,7 @@ export default {
     limitedPrice: '成本价格',
     merchantName: '分销商名称',
     merchantDescribe: '商户备注',
+    merchantRateSale: '保护盈利率(%)',
     nickName: '账户昵称',
     operatorCountLimit: '人数限制',
     orderTime: '订单时间',
@@ -425,6 +432,7 @@ export default {
     lastLoginTime: '最近登录时间',
     limitedPrice: '商户报价',
     mobile: '客户手机',
+    merchantRateSale: '保护盈利率(%)',
     nickName: '客户昵称',
     noOffer: '暂无报价',
     orderCostAmount: '销售总价',
