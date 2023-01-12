@@ -102,10 +102,14 @@
         :rules="addOfferFormRules"
         label-width="120px"
         label-position="right"
+        @submit.native.prevent
       >
         <el-form-item v-if="addOfferForm.channelName" :label="$t('business.channelId')"><el-input v-model="addOfferForm.channelName" disabled /></el-form-item>
         <el-form-item :label="$t('merchant.earningsRate')" prop="earningsRate">
-          <el-slider v-model.number="addOfferForm.earningsRate" show-input @change="handleSliderChange" />
+          <section class="slider-input-wrapper">
+            <el-input v-model.number="addOfferForm.earningsRate" @change="handleSliderChange" @keyup.enter.native="handleClickSubmit" />
+            <el-slider v-model.number="addOfferForm.earningsRate" @change="handleSliderChange" />
+          </section>
         </el-form-item>
       </el-form>
       <el-footer slot="footer">
@@ -255,6 +259,7 @@ export default {
       await updateDistributorRouting(data).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.addRoutingSuccess'))
+          this.$refs.addOfferFormRef.resetFields()
           this.addDialogVisible = false
           this._getRoutingList()
         } else {
@@ -270,6 +275,7 @@ export default {
       await updateDistributorRoutingAll(data).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.updateRoutingSuccess'))
+          this.$refs.addOfferFormRef.resetFields()
           this.addDialogVisible = false
           this._getRoutingList()
         } else {
@@ -297,7 +303,9 @@ export default {
     },
     handleClickSetAll() {
       this.current = {}
-      this.addOfferForm = {}
+      this.addOfferForm = {
+        earningsRate: 0
+      }
       this.addDialogVisible = true
     },
     handleClickSetSingle(data) {
@@ -354,6 +362,19 @@ export default {
 
     .el-select {
       width: 100%;
+    }
+    .slider-input-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      ::v-deep.el-input {
+        width: 50%;
+      }
+
+      .el-slider {
+        width: 40%;
+      }
     }
   }
 }

@@ -281,7 +281,9 @@ export default {
     },
     handleClickSetAll() {
       this.current = {}
-      this.addForm = {}
+      this.addForm = {
+        earningsRate: 0
+      }
       this.addDialogVisible = true
     },
     handleClickSetSingle(data) {
