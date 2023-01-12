@@ -456,6 +456,7 @@ export default {
     lastLoginTime: 'Last Login Time',
     nickName: 'Nickname',
     merchant: 'Merchant',
+    merchantWaiter: 'Waiter',
     orderSaleAmount: 'Sale Amount',
     orderSalePrice: 'Sale Price',
     phone: 'Phone',

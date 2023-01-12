@@ -144,11 +144,12 @@ export default {
           valueEnum: []
         },
         customerEmail: {},
+        merchant: {},
+        merchantWaiter: {},
         activatedCount: {
           i18n: 'activatedCountTotal'
         },
         // totalCount: {},
-        merchant: {},
         orderSaleAmount: {
           type: 'money'
         },
