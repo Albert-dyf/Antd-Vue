@@ -85,7 +85,6 @@
       custom-class="add-offer-dialog"
       :append-to-body="true"
       :modal-append-to-body="true"
-      @submit.native.prevent
     >
       <el-form
         ref="addFormRef"
@@ -93,12 +92,13 @@
         :rules="addFormRules"
         label-width="120px"
         label-position="right"
+        @submit.native.prevent
       >
         <el-form-item v-if="addForm.channelName" :label="$t('business.channelId')"><el-input v-model="addForm.channelName" disabled /></el-form-item>
         <el-form-item :label="$t('source.earningsRate')" prop="earningsRate">
           <section class="slider-input-wrapper">
             <el-input v-model.number="addForm.earningsRate" @change="handleSliderChange" @keyup.enter.native="handleClickSubmit" />
-            <el-slider v-model="addForm.earningsRate" @change="handleSliderChange" />
+            <el-slider v-model.number="addForm.earningsRate" @change="handleSliderChange" />
           </section>
         </el-form-item>
       </el-form>
