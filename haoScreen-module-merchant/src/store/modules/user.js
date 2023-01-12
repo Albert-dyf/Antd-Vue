@@ -9,6 +9,8 @@ const getDefaultState = () => {
     createTime: '',
     email: '',
     lastLoginTime: '',
+    level: '',
+    merchantName: '',
     name: '',
     nickName: '',
     token: ''
@@ -44,6 +46,12 @@ const mutations = {
   },
   SET_NICKNAME: (state, nickName) => {
     state.nickName = nickName
+  },
+  SET_LEVEL: (state, level) => {
+    state.level = level
+  },
+  SET_MERCHANTNAME: (state, merchantName) => {
+    state.merchantName = merchantName
   }
 }
 
@@ -86,6 +94,8 @@ const actions = {
         commit('SET_NICKNAME', data.nickName)
         commit('SET_CREATETIME', data.createTime)
         commit('SET_LASTLOGINTIME', data.lastLoginTime)
+        commit('SET_LEVEL', data.level)
+        commit('SET_MERCHANTNAME', data.merchantName)
         resolve()
       }).catch(error => {
         reject(error)

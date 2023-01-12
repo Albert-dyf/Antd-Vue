@@ -276,6 +276,7 @@ export default {
     mobile: 'Tel',
     mineCount: 'Order Count',
     mineAmount: 'Order Amount',
+    merchantName: 'Merchant',
     name: 'Account',
     nickName: 'Nickname',
     orderAmount: 'Order Amount',

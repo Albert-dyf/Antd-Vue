@@ -12,6 +12,10 @@
         <span class="info-label">{{ $t('dashboard.nickName') }}</span>
         <span class="info-value">{{ nickName }}</span>
       </div>
+      <div class="info-row">
+        <span class="info-label">{{ $t('dashboard.merchantName') }}</span>
+        <span class="info-value">{{ merchantName }}</span>
+      </div>
       <!-- <div class="info-row">
         <span class="info-label">{{ $t('dashboard.mobile') }}</span>
         <span class="info-value">{{ mobile }}</span>
@@ -55,7 +59,8 @@ export default {
       'createTime',
       'email',
       'lastLoginTime',
-      'nickName'
+      'nickName',
+      'merchantName'
     ])
   },
   watch: {},

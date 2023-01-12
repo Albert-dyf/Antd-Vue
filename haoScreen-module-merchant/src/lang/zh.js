@@ -286,6 +286,7 @@ export default {
     mineAmount: '个人销售额',
     merchantCount: '分销商总订单量',
     merchantAmount: '分销商总销售额',
+    merchantName: '所属商户',
     name: '用户名',
     nickName: '昵称',
     orderAmount: '销售额',

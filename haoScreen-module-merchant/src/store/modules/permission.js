@@ -1,5 +1,6 @@
 import { getMenu } from '@/api/user'
 import { constantRoutes, asyncRoutes } from '@/router'
+import store from '..'
 
 const hasPermission = (modules, route) => {
   if (route.meta) {
@@ -32,6 +33,9 @@ const actions = {
 
         const { data } = res
         const accessRouters = await asyncRoutes.filter(item => {
+          if (store.getters.level === 3 && item.path === '/merchant') {
+            return
+          }
           if (hasPermission(data, item)) {
             if (item.children && item.children.length > 0) {
               item.children = item.children.filter(child => {
