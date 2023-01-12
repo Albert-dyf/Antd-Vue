@@ -85,6 +85,7 @@
       custom-class="add-offer-dialog"
       :append-to-body="true"
       :modal-append-to-body="true"
+      @submit.native.prevent
     >
       <el-form
         ref="addFormRef"
@@ -95,7 +96,10 @@
       >
         <el-form-item v-if="addForm.channelName" :label="$t('business.channelId')"><el-input v-model="addForm.channelName" disabled /></el-form-item>
         <el-form-item :label="$t('source.earningsRate')" prop="earningsRate">
-          <el-slider v-model="addForm.earningsRate" show-input @change="handleSliderChange" />
+          <section class="slider-input-wrapper">
+            <el-input v-model.number="addForm.earningsRate" @change="handleSliderChange" @keyup.enter.native="handleClickSubmit" />
+            <el-slider v-model="addForm.earningsRate" @change="handleSliderChange" />
+          </section>
         </el-form-item>
       </el-form>
       <el-footer slot="footer">
@@ -176,7 +180,13 @@ export default {
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    addDialogVisible(val) {
+      if (!val) {
+        this.$refs.addFormRef.resetFields()
+      }
+    }
+  },
   async created() {
     await this._getRoutingList()
   },
@@ -225,6 +235,7 @@ export default {
       setAllRoutings(data).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.addLimitPriceSuccess'))
+          this.$refs.addFormRef.resetFields()
           this.addDialogVisible = false
           this._getRoutingList()
         } else {
@@ -240,6 +251,7 @@ export default {
       setSingleRouting(data).then(res => {
         if (res.code === 200) {
           this.$message.success(this.$t('popMessage.addLimitPriceSuccess'))
+          this.$refs.addFormRef.resetFields()
           this.addDialogVisible = false
           this._getRoutingList()
         } else {
@@ -302,6 +314,20 @@ export default {
 
     .el-select {
       width: 100%;
+    }
+
+    .slider-input-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      ::v-deep.el-input {
+        width: 50%;
+      }
+
+      .el-slider {
+        width: 40%;
+      }
     }
   }
 }
