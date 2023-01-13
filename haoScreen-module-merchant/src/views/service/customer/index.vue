@@ -29,7 +29,7 @@
           <el-table-column
             v-for="attr in Object.keys(tableItemAttr)"
             :key="'customerTableAttr' + attr"
-            :label="$t('service.' + attr)"
+            :label="$t('service.' + (tableItemAttr[attr].i18n || attr))"
             :prop="attr"
           >
             <template slot-scope="scope">
@@ -141,6 +141,9 @@ export default {
       tableItemAttr: {
         email: {},
         nickName: {},
+        merchantName: {
+          i18n: 'merchant'
+        },
         waiterName: {},
         balance: {
           type: 'money'
