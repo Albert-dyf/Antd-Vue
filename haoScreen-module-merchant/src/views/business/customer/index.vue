@@ -2,9 +2,9 @@
   <el-container class="business-customer-wrapper common-container">
     <el-main class="business-customer-content common-body">
       <el-row>
-        <el-form inline size="small">
+        <el-form inline size="small" @submit.native.prevent>
           <starlink-date-picker v-if="false" :star-time="searchForm.startTime" :end-time="searchForm.endTime" />
-          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
+          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item><el-button type="primary" @click="handleClickSearch">{{ $t('common.search') }}</el-button></el-form-item>
         </el-form>
       </el-row>
@@ -91,9 +91,9 @@
         label-width="120px"
         label-position="right"
       >
-        <el-form-item :label="$t('business.email')" prop="email"><el-input v-model="addCustomerForm.email"></el-input></el-form-item>
-        <el-form-item :label="$t('business.customerPwd')" prop="password"><el-input v-model="addCustomerForm.password"></el-input></el-form-item>
-        <el-form-item :label="$t('business.nickName')" prop="nickName"><el-input v-model="addCustomerForm.nickName"></el-input></el-form-item>
+        <el-form-item :label="$t('business.email')" prop="email"><el-input v-model="addCustomerForm.email" @keyup.enter.native="handleClickSubmit"></el-input></el-form-item>
+        <el-form-item :label="$t('business.customerPwd')" prop="password"><el-input v-model="addCustomerForm.password" @keyup.enter.native="handleClickSubmit"></el-input></el-form-item>
+        <el-form-item :label="$t('business.nickName')" prop="nickName"><el-input v-model="addCustomerForm.nickName" @keyup.enter.native="handleClickSubmit"></el-input></el-form-item>
       </el-form>
       <el-footer slot="footer">
         <el-button type="" @click="addDialogVisible = false">{{ $t('common.cancel') }}</el-button>

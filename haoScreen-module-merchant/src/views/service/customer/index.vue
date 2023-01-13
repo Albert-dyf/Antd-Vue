@@ -4,7 +4,7 @@
       <el-row>
         <el-form inline size="small">
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
-          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
+          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item v-if="false">
             <el-select v-model="searchForm.waiterId" :placeholder="$t('select.waiterPlaceholder')" clearable @visible-change="hanleWaiterSelectVisible">
               <el-option v-for="waiter in waiters" :key="waiter.id" :label="waiter.nickName || waiter.email" :value="waiter.id" />

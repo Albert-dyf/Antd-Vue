@@ -4,7 +4,7 @@
       <el-row>
         <el-form inline size="small">
           <starlink-date-picker v-if="false" :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
-          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
+          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.useStatus" :placeholder="$t('select.useStatusPlaceholder')" clearable>
               <el-option v-for="status in useStatus" :key="status.value" :label="status.name" :value="status.value" />
@@ -88,8 +88,8 @@
         label-width="120px"
         label-position="right"
       >
-        <el-form-item :label="$t('merchant.merchantName')" prop="merchantName"><el-input v-model="addForm.merchantName" /></el-form-item>
-        <el-form-item :label="$t('merchant.operatorCountLimit')" prop="operatorCountLimit"><el-input v-model="addForm.operatorCountLimit" /></el-form-item>
+        <el-form-item :label="$t('merchant.merchantName')" prop="merchantName"><el-input v-model="addForm.merchantName" @keyup.enter.native="handleClickSubmit" /></el-form-item>
+        <el-form-item :label="$t('merchant.operatorCountLimit')" prop="operatorCountLimit"><el-input v-model="addForm.operatorCountLimit" @keyup.enter.native="handleClickSubmit" /></el-form-item>
         <el-form-item :label="$t('merchant.merchantDescribe')" prop="merchantDescribe"><el-input v-model="addForm.merchantDescribe" type="textarea" /></el-form-item>
       </el-form>
       <el-footer slot="footer">

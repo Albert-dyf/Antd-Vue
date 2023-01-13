@@ -6,7 +6,7 @@
       <el-row class="bill-panel-search">
         <el-form inline size="small">
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
-          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
+          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.balanceChangeType" :placeholder="$t('select.changeTypePlaceholder')" clearable>
               <el-option v-for="changeType in changeTypes" :key="changeType.value" :label="changeType.name" :value="changeType.value"></el-option>

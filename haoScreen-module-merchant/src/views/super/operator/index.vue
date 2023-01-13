@@ -4,7 +4,7 @@
       <el-row class="operator-manage search-form">
         <el-form :inline="true" size="small">
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
-          <el-form-item><el-input v-model="searchForm.searchKey" clearable :placeholder="$t('search.searchKeyPlaceholder')" /></el-form-item>
+          <el-form-item><el-input v-model="searchForm.searchKey" clearable :placeholder="$t('search.searchKeyPlaceholder')" @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.useStatus" clearable :placeholder="$t('select.useStatusPlaceholder')">
               <el-option v-for="(stateOption, i) in status" :key="'state' + i" :label="stateOption.name" :value="stateOption.value" />
@@ -87,9 +87,9 @@
         label-position="right"
         label-width="100px"
       >
-        <el-form-item :label="$t('super.email')" prop="email"><el-input v-model="addUserForm.email" /></el-form-item>
-        <el-form-item :label="$t('super.password')" prop="password"><el-input v-model="addUserForm.password" /></el-form-item>
-        <el-form-item :label="$t('super.nickname')" prop="nickName"><el-input v-model="addUserForm.nickName" /></el-form-item>
+        <el-form-item :label="$t('super.email')" prop="email"><el-input v-model="addUserForm.email" @keyup.enter.native="handleClickSubmitAdd" /></el-form-item>
+        <el-form-item :label="$t('super.password')" prop="password"><el-input v-model="addUserForm.password" @keyup.enter.native="handleClickSubmitAdd" /></el-form-item>
+        <el-form-item :label="$t('super.nickname')" prop="nickName"><el-input v-model="addUserForm.nickName" @keyup.enter.native="handleClickSubmitAdd" /></el-form-item>
       </el-form>
       <el-footer slot="footer" align="right">
         <el-button type="" @click="addDialogVisible = false">{{ $t('common.cancel') }}</el-button>
@@ -111,8 +111,8 @@
         label-position="right"
         label-width="100px"
       >
-        <el-form-item :label="$t('super.username')" prop="userName"><el-input v-model="editUserForm.userName" /></el-form-item>
-        <el-form-item :label="$t('super.nickname')" prop="nickname"><el-input v-model="editUserForm.nickname" /></el-form-item>
+        <el-form-item :label="$t('super.username')" prop="userName"><el-input v-model="editUserForm.userName" @keyup.enter.native="handleClickSubmitEdit" /></el-form-item>
+        <el-form-item :label="$t('super.nickname')" prop="nickname"><el-input v-model="editUserForm.nickname" @keyup.enter.native="handleClickSubmitEdit" /></el-form-item>
         <el-form-item :label="$t('super.remark')" prop="remark"><el-input v-model="editUserForm.remark" type="textarea" /></el-form-item>
       </el-form>
       <el-footer slot="footer" align="right">

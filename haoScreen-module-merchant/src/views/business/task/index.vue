@@ -4,8 +4,8 @@
       <el-row>
         <el-form inline size="small">
           <starlink-date-picker :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
-          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
-          <el-form-item><el-input v-model="searchForm.customerEmail" :placeholder="$t('search.customerEmailPlaceholder')" clearable /></el-form-item>
+          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
+          <el-form-item><el-input v-model="searchForm.customerEmail" :placeholder="$t('search.customerEmailPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable>
               <el-option v-for="(screenType, i) in screenTypes" :key="'screenType' + i" :label="screenType.name" :value="screenType.value" />

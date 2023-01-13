@@ -2,8 +2,8 @@
   <el-container class="merchant-operator-wrapper common-container">
     <el-main class="merchant-operator-content common-body">
       <el-row>
-        <el-form inline size="small">
-          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable /></el-form-item>
+        <el-form inline size="small" @submit.native.prevent>
+          <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleClickSearch">{{ $t('common.search') }}</el-button>
           </el-form-item>
@@ -87,9 +87,9 @@
         label-position="right"
       >
         <el-form-item :label="$t('merchant.merchantName')" prop="merchantName"><el-input v-model="addForm.merchantName" disabled /></el-form-item>
-        <el-form-item :label="$t('merchant.email')" prop="email"><el-input v-model="addForm.email" /></el-form-item>
-        <el-form-item :label="$t('merchant.nickName')" prop="nickName"><el-input v-model="addForm.nickName" /></el-form-item>
-        <el-form-item :label="$t('merchant.password')" prop="password"><el-input v-model="addForm.password" /></el-form-item>
+        <el-form-item :label="$t('merchant.email')" prop="email"><el-input v-model="addForm.email" @keyup.enter.native="handleClickSubmit" /></el-form-item>
+        <el-form-item :label="$t('merchant.nickName')" prop="nickName"><el-input v-model="addForm.nickName" @keyup.enter.native="handleClickSubmit" /></el-form-item>
+        <el-form-item :label="$t('merchant.password')" prop="password"><el-input v-model="addForm.password" @keyup.enter.native="handleClickSubmit" /></el-form-item>
       </el-form>
       <el-footer slot="footer">
         <el-button @click="addDialogVisible = false">{{ $t('common.cancel') }}</el-button>
