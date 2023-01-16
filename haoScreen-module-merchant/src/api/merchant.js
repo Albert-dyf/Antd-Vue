@@ -4,7 +4,7 @@ const root = '/merchant/api/haoScreen/module/merchant/api/merchant/manage'
 const basePre = root + '/merchant/distributor'
 const quotationPre = root + '/merchant/quotation'
 const operatorPre = root + '/merchant/operator'
-const commissionPre = basePre + '/commission'
+const commissionPre = root + '/distributor/commission'
 
 /**
  * get
