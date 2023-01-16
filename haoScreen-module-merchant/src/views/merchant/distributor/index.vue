@@ -198,6 +198,7 @@ export default {
       await getDistributors(param).then(res => {
         if (res.code === 200) {
           this.tableData = res.data.rows
+          this.useStatus = res.data.params.EnumUseStatus
           syncPages(this.pages, res)
         }
       })
