@@ -458,6 +458,7 @@ export default {
     nickName: 'Nickname',
     merchant: 'Merchant',
     merchantWaiter: 'Waiter',
+    merchantLevel: 'Merchant Level',
     orderSaleAmount: 'Sale Amount',
     orderSalePrice: 'Sale Price',
     phone: 'Phone',

@@ -477,6 +477,7 @@ export default {
     nickName: '客户昵称',
     merchant: '分销商',
     merchantWaiter: '所属商务',
+    merchantLevel: '分销商等级',
     orderSaleAmount: '销售总价',
     orderSalePrice: '销售单价',
     phone: '客户手机',

@@ -144,6 +144,7 @@ export default {
         merchantName: {
           i18n: 'merchant'
         },
+        merchantLevel: {},
         waiterName: {},
         balance: {
           type: 'money'
