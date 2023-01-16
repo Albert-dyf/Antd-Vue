@@ -378,7 +378,7 @@ export default {
     addOperator: '新增超管账号',
     createTime: '创建时间',
     channelName: '通道名称',
-    customerEmail: '客户账号',
+    customerEmail: '客户账户',
     earningsRate: '计划盈利率(%)',
     email: '超管账号',
     interfaceType: '通道类型',

@@ -82,20 +82,18 @@ export default {
       tableItemAttr: {
         createTime: {
           i18n: 'orderTime',
-          width: '180px'
+          width: '140px'
         },
         taskName: {},
         customerEmail: {
-          width: '180px'
+          width: '160px'
         },
-        totalCount: {
-          width: '120px'
-        },
+        channelName: {},
         screenType: {
           type: 'enum',
-          width: '180px',
           valueEnum: []
         },
+        totalCount: {},
         limitedAmount: {
           type: 'money'
         },
