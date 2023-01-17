@@ -47,6 +47,7 @@
           </el-table-column>
           <el-table-column :label="$t('common.option')">
             <template slot-scope="scope">
+              <el-button type="text" @click="handleClickModifyLimitedOperator(scope.row)">{{ $t('common.modifyOperatorLimited') }}</el-button>
               <el-button type="text" @click="handleClickRoute(scope.row)">{{ $t('common.offer') }}</el-button>
               <el-button type="text" @click="handleClickCommission(scope.row)">{{ $t('common.commission') }}</el-button>
               <!-- <el-popconfirm
@@ -98,6 +99,31 @@
       </el-footer>
     </el-dialog>
 
+    <!-- limited operator -->
+    <el-dialog
+      :visible.sync="modifyOperatorLimitedVisible"
+      :title="$t('merchant.modifyOperatorLimited')"
+      width="30vw"
+      custom-class="modify-limited-operator-dialog"
+    >
+      <el-form
+        ref="modifyFormRef"
+        :model="modifyOperatorLimitedForm"
+        :rules="modifyOperatorLimitedFormRules"
+        label-width="120px"
+        label-position="right"
+        @submit.native.prevent
+      >
+        <el-form-item :label="$t('merchant.operatorCountLimit')" prop="operatorCountLimit">
+          <el-input v-model.number="modifyOperatorLimitedForm.operatorCountLimit" @keyup.enter.native="handleClickSubmitLimitedOperator" />
+        </el-form-item>
+      </el-form>
+      <el-footer slot="footer">
+        <el-button @click="modifyOperatorLimitedVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handleClickSubmitLimitedOperator">{{ $t('common.submit') }}</el-button>
+      </el-footer>
+    </el-dialog>
+
     <transition name="fade-transform" mode="out-in">
       <routing v-if="routingDetailVisible" :distributor="current" @backToTable="handleBack" />
     </transition>
@@ -112,7 +138,7 @@
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import Routing from './components/routing.vue'
 import DistributorCommission from './components/commission.vue'
-import { addDistributor, getDistributors, updateDistributor, deleteDistributor } from '@/api/merchant'
+import { addDistributor, getDistributors, updateDistributor, deleteDistributor, updateOperatorLimited } from '@/api/merchant'
 import { syncPages } from '@/utils'
 
 export default {
@@ -171,6 +197,19 @@ export default {
         ]
       },
 
+      // add operator data
+      modifyOperatorLimitedVisible: false,
+      modifyOperatorLimitedForm: {
+        operatorCountLimit: '',
+        merchantId: ''
+      },
+      modifyOperatorLimitedFormRules: {
+        operatorCountLimit: [
+          { required: true, message: this.$t('merchant.operatorCountLimit') + this.$t('validator.isRequired'), trigger: ['blur', 'change'] },
+          { type: 'number', min: 1, max: 50, message: this.$t('merchant.operatorCountLimit') + this.$t('validator.operatorLimitError'), trigger: ['blur', 'change'] }
+        ]
+      },
+
       // routing Detail
       routingDetailVisible: false,
       // commssion
@@ -182,6 +221,11 @@ export default {
     addDialogVisible(val) {
       if (!val) {
         this.$refs.addFormRef.resetFields()
+      }
+    },
+    modifyOperatorLimitedVisible(val) {
+      if (!val) {
+        this.$refs.modifyFormRef.resetFields()
       }
     }
   },
@@ -235,6 +279,21 @@ export default {
         }
       })
     },
+    async _updateOperatorLimited() {
+      const data = {
+        merchantId: this.current.merchantId,
+        operatorCountLimit: this.modifyOperatorLimitedForm.operatorCountLimit
+      }
+      await updateOperatorLimited(data).then(res => {
+        if (res.code === 200) {
+          this.$message.success(this.$t('popMessage.modifySuccess'))
+          this.modifyOperatorLimitedVisible = false
+          this._getDistributors()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
 
     // handler
     handleClickSearch() {
@@ -277,6 +336,17 @@ export default {
     handleStatusChange(data) {
       this.current = data
       this._updateDistributor()
+    },
+    handleClickModifyLimitedOperator(data) {
+      this.current = data
+      this.modifyOperatorLimitedVisible = true
+    },
+    handleClickSubmitLimitedOperator() {
+      this.$refs.modifyFormRef.validate(valid => {
+        if (valid) {
+          this._updateOperatorLimited()
+        }
+      })
     }
   }
 }
@@ -286,7 +356,7 @@ export default {
 
 .merchant-distributor-wrapper {
   position: relative;
-  .add-distributor-dialog {
+  .add-distributor-dialog, .modify-limited-operator-dialog {
     .el-form {
       width: 25vw;
 

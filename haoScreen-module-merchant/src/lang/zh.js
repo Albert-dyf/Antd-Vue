@@ -100,7 +100,8 @@ export default {
     summary: '总计',
     limitPrice: '限价',
     limitPriceAll: '一键限价',
-    noLimitedPrice: '暂未限价'
+    noLimitedPrice: '暂未限价',
+    modifyOperatorLimited: '人数限制'
   },
   // 弹出信息
   popMessage: {
@@ -123,6 +124,7 @@ export default {
     emptySelectError: '请至少选择一项数据',
     enableSuccess: '启用成功',
     langSuccess: '语言切换成功',
+    modifySuccess: '修改成功',
     newPwdIs: '新密码：',
     passwordChangeSuccess: '密码更改成功',
     reLoginTips: '由于长时间未操作，请重新登录',
@@ -250,6 +252,7 @@ export default {
     moduleSortRequired: '模块排序不能为空',
     moduleSortLessThan0: '模块排序需大于0',
     nicknameRequired: '昵称不能为空',
+    operatorLimitError: '需要 > 0 并且 <= 50',
     pwdRequired: '密码不能为空',
     parentIdRequired: '上级目录不能为空',
     roleNameRequired: '角色名称不能为空',
@@ -389,6 +392,7 @@ export default {
     merchantName: '分销商名称',
     merchantDescribe: '商户备注',
     merchantRateSale: '保护盈利率(%)',
+    modifyOperatorLimited: '修改人数限制',
     nickName: '账户昵称',
     operatorCountLimit: '人数限制',
     orderTime: '订单时间',

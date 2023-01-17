@@ -1,16 +1,17 @@
 import request from '@/utils/request'
 
 const root = '/merchant/api/haoScreen/module/merchant/api/merchant/manage'
-const basePre = root + '/merchant/distributor'
+const distributorPre = root + '/merchant/distributor'
 const quotationPre = root + '/merchant/quotation'
 const operatorPre = root + '/merchant/operator'
 const commissionPre = root + '/distributor/commission'
+const basePre = root + '/merchant/base'
 
 /**
  * get
  */
 export function getDistributors(params) {
-  return request(basePre + '/list', {
+  return request(distributorPre + '/list', {
     methods: 'get',
     params
   })
@@ -41,7 +42,7 @@ export function getCommissionList(params) {
  * add
  */
 export function addDistributor(data) {
-  return request(basePre + '/add', {
+  return request(distributorPre + '/add', {
     method: 'post',
     params: { ...data }
   })
@@ -59,7 +60,7 @@ export function addOperator(data) {
  */
 export function updateDistributor(merchantId, enable) {
   const url = enable ? '/enable' : '/disable'
-  return request(basePre + url, {
+  return request(distributorPre + url, {
     method: 'put',
     params: { merchantId }
   })
@@ -95,11 +96,18 @@ export function updateRoutingStatus(quotationId, enable) {
   })
 }
 
+export function updateOperatorLimited(data) {
+  return request(basePre + '/modifyOperatorCountLimit', {
+    method: 'post',
+    params: { ...data }
+  })
+}
+
 /**
  * delete
  */
 export function deleteDistributor(id) {
-  return request(basePre + '/delete', {
+  return request(distributorPre + '/delete', {
     method: 'post',
     params: { id }
   })

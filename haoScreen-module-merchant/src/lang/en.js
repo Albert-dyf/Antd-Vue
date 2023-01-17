@@ -96,7 +96,8 @@ export default {
     summary: 'Summary',
     limitPrice: 'Limited',
     limitPriceAll: 'Limited All',
-    noLimitedPrice: 'No Limited Price'
+    noLimitedPrice: 'No Limited Price',
+    modifyOperatorLimited: 'Operator Count'
   },
   popMessage: {
     addUserSuccess: 'Add User Success !',
@@ -119,6 +120,7 @@ export default {
     enableSuccess: 'Enable Success',
     langSuccess: 'Switch Language Success',
     newPwdIs: 'New password is:',
+    modifySuccess: 'Modified Success !',
     passwordChangeSuccess: 'Change Success',
     reLoginTips: 'You have been logged out, you can cancel to stay on this page, or log in again',
     resetPwdTip: "Have you confirmed the reset of this customer's password ?",
@@ -244,6 +246,7 @@ export default {
     moduleSortRequired: 'Module sort is required !',
     moduleSortLessThan0: 'Module sort number need over than 0 !',
     nicknameRequired: 'Nickname is required !',
+    operatorLimitError: 'should be > 0 and <= 50',
     pwdRequired: 'Password is required !',
     parentIdRequired: 'Parent module is required !',
     roleNameRequired: 'Role name is required !',
@@ -374,6 +377,7 @@ export default {
     merchantName: 'Merchant Name',
     merchantDescribe: 'Merchant Describe',
     merchantRateSale: 'Limited Rate(%)',
+    modifyOperatorLimited: 'Modify Operator Limited Count',
     nickName: 'Nickname',
     operatorCountLimit: 'Operator Count Limit',
     orderTime: 'Order Time',
