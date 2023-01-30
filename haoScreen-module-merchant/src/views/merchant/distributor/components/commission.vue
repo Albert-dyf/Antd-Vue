@@ -154,10 +154,10 @@ export default {
             }
           }, 0)
 
-          if (column.property === 'totalCount' || column.property === 'screenType') {
-            sums[index] = ''
-          } else {
+          if (this.tableItemAttr[column.property].type === 'money') {
             sums[index] = this.$t('common.dollarChar') + ' ' + parseMoney(sums[index])
+          } else {
+            sums[index] = ''
           }
         } else {
           sums[index] = ''
