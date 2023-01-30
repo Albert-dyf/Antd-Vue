@@ -101,7 +101,8 @@ export default {
     limitPrice: '限价',
     limitPriceAll: '一键限价',
     noLimitedPrice: '暂未限价',
-    modifyOperatorLimited: '人数限制'
+    modifyOperatorLimited: '人数限制',
+    toModify: '去修改'
   },
   // 弹出信息
   popMessage: {
@@ -127,6 +128,7 @@ export default {
     modifySuccess: '修改成功',
     newPwdIs: '新密码：',
     passwordChangeSuccess: '密码更改成功',
+    passwordChangeTip: '密码为初始密码/上次修改密码至今已经一个月，建议修改',
     reLoginTips: '由于长时间未操作，请重新登录',
     resetPwdTip: '确认重置该客户密码？',
     resetPwdSuccess: '密码重置成功',

@@ -13,6 +13,7 @@ const getters = {
   mobile: state => state.user.mobile,
   nickName: state => state.user.nickName,
   email: state => state.user.email,
+  showTips: state => state.user.showTips,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
   permission_routes: state => state.permission.routes,

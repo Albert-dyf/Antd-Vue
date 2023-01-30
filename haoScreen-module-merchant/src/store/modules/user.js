@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo, needChangePwd } from '@/api/user'
 import { resetRouter } from '@/router'
 import { setToken, removeToken } from '@/utils/auth' // get token from cookie
 import router from '@/router'
@@ -13,7 +13,8 @@ const getDefaultState = () => {
     merchantName: '',
     name: '',
     nickName: '',
-    token: ''
+    token: '',
+    showTips: false
   }
 }
 
@@ -52,6 +53,9 @@ const mutations = {
   },
   SET_MERCHANTNAME: (state, merchantName) => {
     state.merchantName = merchantName
+  },
+  SET_SHOWTIPS: (state, showTips) => {
+    state.showTips = showTips
   }
 }
 
@@ -123,6 +127,25 @@ const actions = {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
+      resolve()
+    })
+  },
+
+  // validate if need change password
+  validatePwdNeedModify({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      needChangePwd().then(res => {
+        if (res.code === 200 && res.data.isChange === 1) {
+          commit('SET_SHOWTIPS', true)
+          resolve()
+        }
+      })
+    })
+  },
+
+  hideTips({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      commit('SET_SHOWTIPS', false)
       resolve()
     })
   }

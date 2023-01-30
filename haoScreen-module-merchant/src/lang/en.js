@@ -97,7 +97,8 @@ export default {
     limitPrice: 'Limited',
     limitPriceAll: 'Limited All',
     noLimitedPrice: 'No Limited Price',
-    modifyOperatorLimited: 'Operator Count'
+    modifyOperatorLimited: 'Operator Count',
+    toModify: 'Modify'
   },
   popMessage: {
     addUserSuccess: 'Add User Success !',
@@ -122,6 +123,7 @@ export default {
     newPwdIs: 'New password is:',
     modifySuccess: 'Modified Success !',
     passwordChangeSuccess: 'Change Success',
+    passwordChangeTip: 'Your password is the initial password / One month has passed since the last password change, modifications are recommended',
     reLoginTips: 'You have been logged out, you can cancel to stay on this page, or log in again',
     resetPwdTip: "Have you confirmed the reset of this customer's password ?",
     resetPwdSuccess: 'Reset password success',

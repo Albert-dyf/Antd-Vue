@@ -60,12 +60,24 @@ export default {
       'email',
       'lastLoginTime',
       'nickName',
-      'merchantName'
+      'merchantName',
+      'showTips'
     ])
   },
   watch: {},
-  async created() {
-    await this.$store.dispatch('user/getInfo')
+  created() {
+    this.$store.dispatch('user/getInfo')
+    if (this.showTips) {
+      this.$confirm(this.$t('popMessage.passwordChangeTip'), this.$t('common.tips'), {
+        confirmButtonText: this.$t('common.toModify'),
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning'
+      }).then(() => {
+        this.pwdDialogVisible = true
+      }).catch(() => {
+        this.$store.dispatch('user/hideTips')
+      })
+    }
   },
   mounted() {},
   methods: {

@@ -43,6 +43,12 @@ export function modifyPwd(data) {
   })
 }
 
+export function needChangePwd() {
+  return request(initPre + '/isChangePassword', {
+    method: 'get'
+  })
+}
+
 export function getSelfOrderAmount() {
   return request(dashboardPre + '/orderAmountMine', {
     method: 'get'

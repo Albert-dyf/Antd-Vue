@@ -172,6 +172,8 @@ export default {
         const params = { ...this.loginForm }
         params.userPassword = encryptor.encrypt(this.loginForm.userPassword).toString()
         this.$store.dispatch('user/login', params).then(() => {
+          // validate password if need modify
+          this.$store.dispatch('user/validatePwdNeedModify')
           this.$router.push({ path: '/' })
           this.loading = false
         }).catch(() => {
