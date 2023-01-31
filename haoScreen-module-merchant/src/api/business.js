@@ -87,6 +87,13 @@ export function refreshTaskStatus(taskId) {
   })
 }
 
+export function transferCustomer(data) {
+  return request(customerPre + '/transfer', {
+    method: 'post',
+    params: { ...data }
+  })
+}
+
 /**
  * delete
  */

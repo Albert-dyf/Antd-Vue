@@ -137,6 +137,7 @@ export default {
     sendSuccess: '发送成功',
     statusChangeSuccess: '状态切换成功',
     timeout: '请求超时，请重新尝试请求',
+    transferCustomerSuccess: '客户转移成功',
     undoOfferTip: '确认撤销此项报价？',
     undoSuccess: '撤销成功',
     updateRoleSuccess: '角色更新成功',
@@ -453,9 +454,12 @@ export default {
     stateSwitch: '启用/禁用',
     screenType: '筛查类型',
     salePrice: '销售报价',
+    selectedCustomer: '已选客户',
     taskName: '任务名称',
     taskStatus: '任务状态',
     totalCount: '任务总数',
+    transferCustomer: '转移客户',
+    transferOperatorId: '移交对象',
     useStatus: '启用/禁用'
   },
   // 客户服务

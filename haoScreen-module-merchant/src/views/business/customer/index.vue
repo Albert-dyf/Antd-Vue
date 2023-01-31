@@ -11,6 +11,7 @@
 
       <el-row class="table-tool-bar">
         <el-button type="primary" size="small" @click="handleClickAdd">+ {{ $t('common.add') }}</el-button>
+        <el-button type="primary" size="small" @click="handleClickTransfer">{{ $t('business.transferCustomer') }}</el-button>
       </el-row>
 
       <el-row>
@@ -19,7 +20,9 @@
           :data="tableData"
           stripe
           size="small"
+          @selection-change="handleSelectionChange"
         >
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
             v-for="(attr, i) in Object.keys(tableItemAttr)"
             :key="('customerAttr' + i)"
@@ -101,6 +104,40 @@
       </el-footer>
     </el-dialog>
 
+    <!-- transfer customer -->
+    <el-dialog
+      :visible.sync="transferDialogVisible"
+      :title="$t('business.transferCustomer')"
+      width="30vw"
+      custom-class="transfer-customer-dialog"
+      @close="handleCloseTransferDialog"
+    >
+      <el-form
+        ref="transferCustomerFormRef"
+        :model="transferCustomerForm"
+        :rules="transferCustomerFormRules"
+        label-width="120px"
+        label-position="right"
+      >
+        <el-form-item :label="$t('business.selectedCustomer')">
+          <section class="customer-tags-wrapper">
+            <el-tag v-for="customer in selectedCustomer" :key="customer.id">{{ customer.nickName }}</el-tag>
+          </section>
+        </el-form-item>
+        <el-form-item :label="$t('business.transferOperatorId')" prop="transferOperatorId">
+          <el-select v-model="transferCustomerForm.transferOperatorId" filterable remote :remote-method="handleSearchRemote" :loading="loadingOperator">
+            <section v-infinite-scroll="loadOperator" style="overflow: auto; height: 150px;">
+              <el-option v-for="operator in operators" :key="operator.operatorId" :label="operator.nickName" :value="operator.operatorId"></el-option>
+            </section>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <el-footer slot="footer">
+        <el-button type="" @click="transferDialogVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handleClickSubmitTransfer">{{ $t('business.transferCustomer') }}</el-button>
+      </el-footer>
+    </el-dialog>
+
     <transition name="fade-transform" mode="out-in">
       <bill-panel v-if="showBillPanel" :customer="current" @backToTable="handleBack" />
     </transition>
@@ -115,8 +152,9 @@
 import StarlinkDatePicker from '@/components/StarlinkDatePicker'
 import BillPanel from '@/components/BillPanel'
 import Routing from './components/routing.vue'
-import { getCustomerList, addCustomer, deleteCustomer, updateCustomerStatus } from '@/api/business'
+import { getCustomerList, addCustomer, deleteCustomer, updateCustomerStatus, transferCustomer } from '@/api/business'
 import { getEncryptorPublicKey } from '@/api/commen-resource'
+import { getOperatorList } from '@/api/commen-resource'
 import JSEncrypt from 'jsencrypt'
 import { parseMoney, syncPages } from '@/utils'
 import { isEmail, isPwd } from '@/utils/regex'
@@ -173,6 +211,7 @@ export default {
       isLoading: false,
       tableData: [],
       current: {},
+      selectedCustomer: [],
 
       // add user data
       addDialogVisible: false,
@@ -197,6 +236,25 @@ export default {
       },
       privateKeyId: '',
       publicKey: '',
+
+      // transfer customer
+      transferDialogVisible: false,
+      transferCustomerForm: {
+        transferOperatorId: ''
+      },
+      transferCustomerFormRules: {
+        transferOperatorId: [
+          { required: true, message: this.$t('business.transferOperatorId') + this.$t('validator.isRequired'), trigger: ['blur', 'change'] }
+        ]
+      },
+      operators: [],
+      operatorPages: {
+        pageNumber: 0,
+        pageSize: 10,
+        totalPages: 1
+      },
+      operaotrSearchKey: '',
+      loadingOperator: false,
 
       // bill panel
       showBillPanel: false,
@@ -242,6 +300,20 @@ export default {
         this.publicKey = res.data.publicKey
       })
     },
+    async _getOperators(type) {
+      this.loadingOperator = true
+      await getOperatorList({ ...this.operatorPages, searchKey: this.operaotrSearchKey }).then(res => {
+        if (res.code === 200) {
+          if (type) {
+            this.operators = [...this.operators, ...res.data.rows]
+          } else {
+            this.operators = res.data.rows
+          }
+          syncPages(this.operatorPages, res)
+        }
+      })
+      this.loadingOperator = false
+    },
     _addCustomer() {
       const data = {
         ...this.addCustomerForm
@@ -280,6 +352,21 @@ export default {
         }
       })
     },
+    _transferCustomer() {
+      const data = {
+        customerIds: this.selectedCustomer.map(item => { return item.customerId }).toString(),
+        destWaiterId: this.transferCustomerForm.transferOperatorId
+      }
+      transferCustomer(data).then(res => {
+        if (res.code === 200) {
+          this.$message.success(this.$t('popMessage.transferCustomerSuccess'))
+          this.transferDialogVisible = false
+          this._getCustomerList()
+        } else {
+          this.$message.success(res.msg)
+        }
+      })
+    },
 
     // handler
     handleClickSearch() {
@@ -307,10 +394,10 @@ export default {
       this.showBillPanel = true
     },
     handleChangePageSize() {
-      this._getRoutingList()
+      this._getCustomerList()
     },
     hanldeChangeCurrentPage() {
-      this._getRoutingList()
+      this._getCustomerList()
     },
     handleBack() {
       this.showBillPanel = false
@@ -323,6 +410,35 @@ export default {
     handleClickRouting(data) {
       this.current = data
       this.routingVisible = true
+    },
+    handleSelectionChange(selection) {
+      this.selectedCustomer = selection
+    },
+    handleClickTransfer() {
+      if (this.selectedCustomer.length > 0) {
+        this.transferDialogVisible = true
+        this.loadOperator()
+      } else {
+        this.$alert(this.$t('popMessage.emptySelectError'))
+      }
+    },
+    handleClickSubmitTransfer() {
+      this._transferCustomer()
+    },
+    handleSearchRemote(searchKey) {
+      this.operaotrSearchKey = searchKey
+      this._getOperators()
+    },
+    handleCloseTransferDialog() {
+      this.$refs.transferCustomerFormRef.resetFields()
+    },
+
+    // common
+    loadOperator() {
+      if (this.operatorPages.pageNumber < this.operatorPages.totalPages) {
+        this.operatorPages.pageNumber++
+        this._getOperators('infinite')
+      }
     }
   }
 }
@@ -331,9 +447,24 @@ export default {
 <style lang='scss' scoped>
 .business-customer-wrapper {
   position: relative;
-  .add-customer-dialog, .edit-customer-dialog {
+  .add-customer-dialog, .edit-customer-dialog, .transfer-customer-dialog {
     .el-form {
       width: 25vw;
+    }
+  }
+
+  .transfer-customer-dialog {
+    .customer-tags-wrapper {
+      max-height: 100px;
+      overflow: auto;
+
+      .el-tag {
+        margin-right: 8px;
+      }
+
+      .el-select {
+        width: 100%;
+      }
     }
   }
 }

@@ -4,7 +4,7 @@ const root = '/merchant/api/haoScreen/module/merchant/api/common/resource'
 const securityPre = root + '/system/security'
 const countryPre = root + '/country/base'
 const screenPre = root + '/screen/type'
-const operatorPre = root + '/manage/operator'
+const operatorPre = root + '/merchant/operator'
 const providerPre = root + '/provider/balance/log'
 const customerPre = root + '/customer/balance/log'
 

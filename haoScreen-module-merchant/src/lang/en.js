@@ -132,6 +132,7 @@ export default {
     sendSuccess: 'Send Success',
     statusChangeSuccess: 'Status Changed Success',
     timeout: 'The Request Times Out, Please Retry The Request',
+    transferCustomerSuccess: 'Transfer Customer Success',
     undoOfferTip: 'Have you confirmed undo this offer ?',
     undoSuccess: 'Undo Success',
     updateRoleSuccess: 'Update Role Success',
@@ -436,9 +437,12 @@ export default {
     stateSwitch: 'Enable/Disable',
     screenType: 'Screen Type',
     salePrice: 'Sale Price',
+    selectedCustomer: 'Customer',
     taskName: 'Task Name',
     taskStatus: 'Task Status',
     totalCount: 'Total Count',
+    transferCustomer: 'Translate',
+    transferOperatorId: 'Receiver',
     useStatus: 'Enable/Disable'
   },
   service: {

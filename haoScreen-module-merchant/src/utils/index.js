@@ -299,6 +299,7 @@ export function syncPages(pages, res) {
   pages.pageNumber = res.data.pageNumber
   pages.pageSize = res.data.pageSize
   pages.total = res.data.totalRows
+  pages.totalPages = res.data.totalPages
 }
 
 export function parseModule2Tree(modules) {

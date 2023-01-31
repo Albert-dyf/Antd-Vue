@@ -188,10 +188,10 @@ export default {
       this.current = data
     },
     handleChangePageSize() {
-      this._getRoutingList()
+      this._getCustomerTask()
     },
     hanldeChangeCurrentPage() {
-      this._getRoutingList()
+      this._getCustomerTask()
     },
     handleClickRefresh(data) {
       this.current = data
