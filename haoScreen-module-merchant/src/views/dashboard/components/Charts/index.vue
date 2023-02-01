@@ -66,7 +66,7 @@ export default {
         },
         toolbox: {
           feature: {
-            dataView: { show: true, readOnly: false },
+            dataView: { show: true, readOnly: true },
             restore: { show: true },
             saveAsImage: { show: true }
           }
