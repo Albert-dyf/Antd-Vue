@@ -56,9 +56,16 @@ service.interceptors.response.use(
     }
 
     if (response.data.code === 400) {
-      if (response.data.msg.includes('Token已过期')) {
-        store.dispatch('user/logout')
-      }
+      Message({
+        message: response.data.msg,
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(response)
+    }
+
+    if (response.data.code === 401) {
+      store.dispatch('user/logout')
       Message({
         message: response.data.msg,
         type: 'error',
