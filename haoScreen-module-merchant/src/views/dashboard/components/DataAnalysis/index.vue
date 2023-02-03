@@ -4,7 +4,7 @@
     <el-col :span="6">
       <el-card>
         <section class="analysis-item">
-          <div class="title">{{ $t('dashboard.amountDataSelf') }}</div>
+          <div class="title">{{ $t('dashboard.amountDataSelf') + "（￥）" }}</div>
           <div class="value">
             <count-to :start-val="0" :end-val="parseMoney(amountDataSelf.orderAmount) || 0" :decimals="5" :duration="3000" />
           </div>
@@ -15,7 +15,7 @@
     <el-col :span="6">
       <el-card class="analysis-item">
         <section class="analysis-item">
-          <div class="title">{{ $t('dashboard.amountDataMerchant') }}</div>
+          <div class="title">{{ $t('dashboard.amountDataMerchant') + "（￥）" }}</div>
           <div class="value">
             <count-to :start-val="0" :end-val="parseMoney(amountDataTotal.orderAmountTotal) || 0" :decimals="5" :duration="3000" />
           </div>

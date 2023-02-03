@@ -137,7 +137,7 @@ export default {
     },
     pickeOneDate(value) {
       if (value) {
-        const day = 30 * 24 * 3600 * 1000
+        const day = 31 * 24 * 3600 * 1000
         const max = this.pickeOneDate + day - 1000
         const min = this.pickeOneDate - day + 24 * 3600 * 1000
         this.pickerOptionsByRange.disabledDate = (date) => {

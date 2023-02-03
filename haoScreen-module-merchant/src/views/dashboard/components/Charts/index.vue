@@ -24,7 +24,7 @@ export default {
       seriesItem: {
         name: '',
         type: 'bar',
-        barWidth: '10%',
+        barWidth: '30%',
         data: [],
         animationDuration
       },
@@ -93,10 +93,11 @@ export default {
             axisTick: {
               show: false
             },
-            boundaryGap: ['3%', '3%']
+            boundaryGap: ['3%', '3%'],
+            min: 0
           },
           {
-            name: this.$t('dashboard.orderAmount'),
+            name: this.$t('dashboard.orderAmount') + '（￥）',
             type: 'value',
             position: 'right',
             axisTick: {
@@ -108,10 +109,20 @@ export default {
             },
             splitArea: {
               show: false
-            }
+            },
+            min: 0
           }
         ],
-        series: this.series
+        series: this.series,
+        dataZoom: [
+          {
+            type: 'slider',
+            show: true
+          },
+          {
+            type: 'inside'
+          }
+        ]
       })
     },
 
