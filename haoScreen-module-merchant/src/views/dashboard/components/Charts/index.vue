@@ -150,6 +150,15 @@ export default {
       const date = []
       count.name = this.$t('dashboard.' + type + 'Count')
       count.yAxisIndex = 0
+      /**
+       * 通过 z 层级 重叠两个柱状图
+       */
+      if (type === 'merchant') { // 初始化时是优先请求的分销商数据，所以这里这样判断
+        count.z = '1'
+        count.barGap = '-100%'
+      } else {
+        count.z = '2'
+      }
       amount.name = this.$t('dashboard.' + type + 'Amount')
       amount.type = 'line'
       amount.yAxisIndex = 1
