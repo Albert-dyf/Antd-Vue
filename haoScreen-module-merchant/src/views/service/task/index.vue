@@ -12,7 +12,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable>
+            <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable filterable>
               <el-option v-for="(screenType, i) in screenTypes" :key="'screenType' + i" :label="screenType.name" :value="screenType.value" />
             </el-select>
           </el-form-item>

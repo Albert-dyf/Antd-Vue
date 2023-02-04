@@ -7,7 +7,7 @@
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item><el-input v-model="searchForm.customerEmail" :placeholder="$t('search.customerEmailPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable>
+            <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable filterable>
               <el-option v-for="(screenType, i) in screenTypes" :key="'screenType' + i" :label="screenType.name" :value="screenType.value" />
             </el-select>
           </el-form-item>

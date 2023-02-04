@@ -125,7 +125,15 @@
           </section>
         </el-form-item>
         <el-form-item :label="$t('business.transferOperatorId')" prop="transferOperatorId">
-          <el-select v-model="transferCustomerForm.transferOperatorId" filterable remote :remote-method="handleSearchRemote" :loading="loadingOperator">
+          <el-select
+            v-model="transferCustomerForm.transferOperatorId"
+            filterable
+            remote
+            clearable
+            :remote-method="handleSearchRemote"
+            :loading="loadingOperator"
+            @clear="handleSelectedClear"
+          >
             <section v-infinite-scroll="loadOperator" style="overflow: auto; height: 150px;">
               <el-option v-for="operator in operators" :key="operator.operatorId" :label="operator.nickName" :value="operator.operatorId"></el-option>
             </section>
@@ -427,10 +435,15 @@ export default {
     },
     handleSearchRemote(searchKey) {
       this.operaotrSearchKey = searchKey
+      this.operatorPages.pageNumber = 1
       this._getOperators()
     },
     handleCloseTransferDialog() {
       this.$refs.transferCustomerFormRef.resetFields()
+    },
+    handleSelectedClear() {
+      this.operaotrSearchKey = ''
+      this._getOperators()
     },
 
     // common
