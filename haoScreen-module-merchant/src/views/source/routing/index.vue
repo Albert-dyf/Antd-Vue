@@ -98,7 +98,7 @@
         <el-form-item :label="$t('source.earningsRate')" prop="earningsRate">
           <section class="slider-input-wrapper">
             <el-input v-model.number="addForm.earningsRate" @change="handleSliderChange" @keyup.enter.native="handleClickSubmit" />
-            <el-slider v-model.number="addForm.earningsRate" @change="handleSliderChange" />
+            <el-slider v-model.number="addForm.earningsRate" :max="1000" @change="handleSliderChange" />
           </section>
         </el-form-item>
       </el-form>
