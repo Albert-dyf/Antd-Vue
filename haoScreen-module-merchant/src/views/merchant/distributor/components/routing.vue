@@ -8,7 +8,7 @@
           <starlink-date-picker v-if="false" :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable filterable>
+            <el-select v-model="searchForm.screenType" :placeholder="$t('select.selectOrSearchKey')" clearable filterable>
               <el-option v-for="screenType in screenTypes" :key="screenType.value" :label="screenType.name" :value="screenType.value"></el-option>
             </el-select>
           </el-form-item>

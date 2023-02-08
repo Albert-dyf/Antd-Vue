@@ -6,7 +6,7 @@
           <starlink-date-picker v-if="false" :start-time.sync="searchForm.startTime" :end-time.sync="searchForm.endTime" />
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable filterable>
+            <el-select v-model="searchForm.screenType" :placeholder="$t('select.selectOrSearchKey')" clearable filterable>
               <el-option v-for="screenType in screenTypes" :key="screenType.value" :label="screenType.name" :value="screenType.value"></el-option>
             </el-select>
           </el-form-item>
@@ -37,6 +37,8 @@
             :key="'routingTableAttr' + attr"
             :label="$t('source.' + (tableItemAttr[attr].i18n || attr))"
             :prop="attr"
+            :width="tableItemAttr[attr].width || ''"
+            show-overflow-tooltip
           >
             <template slot-scope="scope">
               <el-switch
@@ -51,7 +53,14 @@
                   {{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}
                 </el-tag>
                 <span v-else>{{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}</span>
-              </span><span v-else-if="tableItemAttr[attr].type === 'money'">
+              </span>
+              <span v-else-if="attr === 'handleSize'">
+                {{ scope.row.handleMinSize + ' ~ ' + scope.row.handleMaxSize }}
+              </span>
+              <span v-else-if="attr === 'finishTime'">
+                {{ scope.row.finishTimeLongMin + ' ~ ' + scope.row.finishTimeLongMax + ' ' + $t('source.minute') }}
+              </span>
+              <span v-else-if="tableItemAttr[attr].type === 'money'">
                 {{ scope.row[attr] ? $t('common.dollarChar') + ' ' + parseMoney(Math.round(scope.row[attr])) : $t('common.noLimitedPrice') }}
               </span>
               <span v-else>{{ scope.row[attr] }}</span>
@@ -125,6 +134,7 @@ export default {
       tableItemAttr: {
         channelName: {},
         interfaceType: {
+          width: '100px',
           type: 'enum',
           valueEnum: []
         },
@@ -141,12 +151,13 @@ export default {
         },
         rateLimit: {},
         useStatus: {
+          width: '80px',
           type: 'enum',
           colorEnum: ['danger', 'success', 'warning', 'danger'],
           valueEnum: []
         },
-        handleMinSize: {},
-        handleMaxSize: {},
+        handleSize: {},
+        finishTime: {},
         lastUpdateTime: {}
       },
 

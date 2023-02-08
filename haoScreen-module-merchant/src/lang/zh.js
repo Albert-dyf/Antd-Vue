@@ -242,7 +242,8 @@ export default {
     screenTypePlaceholder: '选择筛查类型',
     taskStatusPlaceholder: '选择任务状态',
     useStatusPlaceholder: '选择状态',
-    waiterPlaceholder: '选择所属商务'
+    waiterPlaceholder: '选择所属商务',
+    selectOrSearchKey: '选择或搜索关键字'
   },
   validator: {
     emailRequired: '用户名不能为空',
@@ -357,6 +358,10 @@ export default {
     earningsRate: '计划盈利率(%)',
     editProvider: '编辑供应商',
     editChannel: '编辑通道',
+    finishTime: '预计完成耗时',
+    finishTimeLongMin: '单次任务完成最小时间',
+    finishTimeLongMax: '单次任务完成最大时间',
+    handleSize: '单次提交量范围',
     handleMinSize: '最小提交量',
     handleMaxSize: '最大提交量',
     interfaceUrl: '接口地址',
@@ -364,6 +369,8 @@ export default {
     limitedPrice: '限制价格',
     lastUpdateTime: '报价时间',
     modifyAppSecret: '修改密钥',
+    minute: '分钟',
+    millisecond: '毫秒',
     providerName: '供应商名称',
     providerCode: '供应商编号',
     providerId: '供应商',

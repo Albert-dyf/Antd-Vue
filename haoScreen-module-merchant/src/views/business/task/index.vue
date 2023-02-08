@@ -7,7 +7,7 @@
           <el-form-item><el-input v-model="searchForm.searchKey" :placeholder="$t('search.searchKeyPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item><el-input v-model="searchForm.customerEmail" :placeholder="$t('search.customerEmailPlaceholder')" clearable @keyup.enter.native="handleClickSearch" /></el-form-item>
           <el-form-item>
-            <el-select v-model="searchForm.screenType" :placeholder="$t('select.screenTypePlaceholder')" clearable filterable>
+            <el-select v-model="searchForm.screenType" :placeholder="$t('select.selectOrSearchKey')" clearable filterable>
               <el-option v-for="(screenType, i) in screenTypes" :key="'screenType' + i" :label="screenType.name" :value="screenType.value" />
             </el-select>
           </el-form-item>
@@ -36,9 +36,12 @@
           >
             <template slot-scope="scope">
               <span v-if="tableItemAttr[attr].type === 'enum'">
-                <el-tag v-if="tableItemAttr[attr].colorEnum" :type="tableItemAttr[attr].colorEnum[scope.row[attr]]">
-                  {{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}
-                </el-tag>
+                <el-tooltip v-if="tableItemAttr[attr].colorEnum" effect="light" :content="scope.row.handleResult" placement="left">
+                  <el-tag :type="tableItemAttr[attr].colorEnum[scope.row[attr]]">
+                    {{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}
+                    <i class="el-icon-info"></i>
+                  </el-tag>
+                </el-tooltip>
                 <span v-else>{{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}</span>
               </span>
               <span v-else-if="tableItemAttr[attr].type === 'money'">{{ $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) }}</span>

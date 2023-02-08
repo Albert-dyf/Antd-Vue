@@ -236,7 +236,8 @@ export default {
     screenTypePlaceholder: 'Select Screen Type',
     taskStatusPlaceholder: 'Select Task Status',
     useStatusPlaceholder: 'Select Status',
-    waiterPlaceholder: 'Selecet Waiter'
+    waiterPlaceholder: 'Selecet Waiter',
+    selectOrSearchKey: 'Select Or Search Keyword'
   },
   validator: {
     emailRequired: 'Email is required !',
@@ -345,11 +346,17 @@ export default {
     editProvider: 'Edit Provider',
     editChannel: 'Edit Channel',
     earningsRate: 'Profitability(%)',
+    finishTime: 'Estimated Finished time',
+    finishTimeLongMin: 'Finished Fastest',
+    finishTimeLongMax: 'Finished Slowest',
+    handleSize: 'Submit Size Range',
     handleMinSize: 'Min Size',
     handleMaxSize: 'Max Size',
     interfaceUrl: 'Interface URL',
     interfaceType: 'Channel Type',
     modifyAppSecret: 'Modify Appsecret',
+    minute: 'Minutes',
+    millisecond: 'Milliseconds',
     providerName: 'Provider Name',
     providerCode: 'Provider Code',
     providerId: 'Provider',
