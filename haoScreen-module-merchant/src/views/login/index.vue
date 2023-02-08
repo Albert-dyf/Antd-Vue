@@ -3,7 +3,7 @@
     <starlink-meteor v-if="false" />
     <div class="login-center-block">
       <div class="login-img" src="">
-        <span class="title">空号检测</span>
+        <span class="title">银河数据检测</span>
         <span class="sub-title">商户端</span>
         <template v-if="false">
           <div class="circle-1"></div>

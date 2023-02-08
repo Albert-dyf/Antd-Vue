@@ -304,7 +304,7 @@ export default {
     const typeFilter = [
       {
         id: '1',
-        text: '空号检测',
+        text: '银河数据检测',
         prices: [
           {
             min: 0,

@@ -1,5 +1,5 @@
 module.exports = {
-  title: '空号检测商户端',
+  title: '银河数据检测商户端',
 
   /**
    * @type {boolean} true | false

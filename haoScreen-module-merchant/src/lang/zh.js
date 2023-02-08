@@ -32,7 +32,7 @@ export default {
   // 通用文字
   common: {
     authorized: '授权',
-    title: '空号检测商户端',
+    title: '银河数据检测商户端',
     per: '条',
     dollar: '元',
     search: '查询',
