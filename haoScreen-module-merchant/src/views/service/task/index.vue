@@ -42,9 +42,12 @@
           >
             <template slot-scope="scope">
               <span v-if="tableItemAttr[attr].type === 'enum'">
-                <el-tag v-if="tableItemAttr[attr].colorEnum" :type="tableItemAttr[attr].colorEnum[scope.row[attr]]">
-                  {{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}
-                </el-tag>
+                <el-tooltip v-if="tableItemAttr[attr].colorEnum" effect="light" :content="scope.row.handleResult" placement="left">
+                  <el-tag :type="tableItemAttr[attr].colorEnum[scope.row[attr]]">
+                    {{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}
+                    <i class="el-icon-info"></i>
+                  </el-tag>
+                </el-tooltip>
                 <span v-else>{{ tableItemAttr[attr].valueEnum[scope.row[attr]] ? tableItemAttr[attr].valueEnum[scope.row[attr]].name : '-' }}</span>
               </span>
               <span v-else-if="tableItemAttr[attr].type === 'money'">{{ $t('common.dollarChar') + ' ' + parseMoney(scope.row[attr]) }}</span>
@@ -157,7 +160,7 @@ export default {
           type: 'money'
         },
         taskStatus: {
-          width: '80px',
+          width: '100px',
           type: 'enum',
           valueEnum: [],
           colorEnum: ['danger', 'info', '', '', 'success', 'danger']
