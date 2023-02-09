@@ -96,3 +96,9 @@ export function getOrderListMine() {
     method: 'get'
   })
 }
+
+export function getInvitationCode() {
+  return request(authInfoPre + '/getInvitationCode', {
+    method: 'get'
+  })
+}
