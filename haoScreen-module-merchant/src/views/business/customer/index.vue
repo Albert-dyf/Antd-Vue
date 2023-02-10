@@ -132,7 +132,7 @@
             clearable
             :remote-method="handleSearchRemote"
             :loading="loadingOperator"
-            :placeholder="$t('select.selectOrSearchKey')"
+            :placeholder="$t('select.transferOperatorPlaceholder')"
             @clear="handleSelectedClear"
           >
             <section v-infinite-scroll="loadOperator" style="overflow: auto; height: 150px;">

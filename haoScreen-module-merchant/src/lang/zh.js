@@ -240,8 +240,9 @@ export default {
     customerPlaceholder: '选择客户',
     changeTypePlaceholder: '选择账单类型',
     interfaceTypePlaceholder: '选择通道类型',
-    screenTypePlaceholder: '选择筛查类型',
+    screenTypePlaceholder: '搜索选择筛查类型',
     taskStatusPlaceholder: '选择任务状态',
+    transferOperatorPlaceholder: '搜索选择移交对象',
     useStatusPlaceholder: '选择状态',
     waiterPlaceholder: '选择所属商务',
     selectOrSearchKey: '选择或搜索关键字'

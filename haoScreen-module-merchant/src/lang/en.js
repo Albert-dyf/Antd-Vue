@@ -234,8 +234,9 @@ export default {
     customerPlaceholder: 'Select Customer',
     changeTypePlaceholder: 'Select Bill Type',
     interfaceTypePlaceholder: 'Select Interface Type',
-    screenTypePlaceholder: 'Select Screen Type',
+    screenTypePlaceholder: 'Search and Select Screen Type',
     taskStatusPlaceholder: 'Select Task Status',
+    transferOperatorPlaceholder: 'Search and Select Transfor Operator',
     useStatusPlaceholder: 'Select Status',
     waiterPlaceholder: 'Selecet Waiter',
     selectOrSearchKey: 'Select Or Search Keyword'
