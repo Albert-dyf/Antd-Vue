@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 18
 
-      - run: npm ci          # 或 npm install
+      - run: npm install         # 或 npm install
       - run: npm run build   # 构建出 dist
 
       - name: Deploy
